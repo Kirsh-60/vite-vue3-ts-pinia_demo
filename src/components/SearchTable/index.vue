@@ -1,5 +1,10 @@
 <template>
-  <el-form :model="searchform" :inline="true" label-width="auto" style="width: 100%">
+  <el-form
+    :model="searchform"
+    :inline="true"
+    label-width="auto"
+    style="width: 100%"
+  >
     <el-form-item label="用户姓名">
       <el-input v-model="searchform.name" style="min-width: 200px" />
     </el-form-item>
@@ -22,13 +27,19 @@
       >
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" :border="tableOptions.border" style="width: 100%">
-    <el-table-column fixed prop="date" label="Date" width="150" />
-    <el-table-column prop="name" label="Name" width="120" />
-    <el-table-column prop="state" label="State" width="120" />
-    <el-table-column prop="city" label="City" width="320" />
-    <el-table-column prop="address" label="Address" width="600" />
-    <el-table-column prop="zip" label="Zip" />
+  <el-table
+    :data="tableData"
+    :border="tableOptions.border"
+    style="width: 100%"
+    v-loading="tableOptions.tLoading"
+  >
+    <el-table-column
+      v-for="(item, index) in tableOptions.singTable"
+      :key="index"
+      :prop="item.prop"
+      :label="item.label"
+      :width="item.width"
+    />
   </el-table>
   <el-pagination
     v-model:current-page="tableOptions.pageSet.currentPage"
@@ -53,6 +64,8 @@ interface TableOptions {
   background: string
   tableSize: string
   border: boolean
+  tLoading: boolean
+  singTable: { [key: string]: any }
   pageSet: {
     total: number
     size: number[]
@@ -60,6 +73,7 @@ interface TableOptions {
     pageSize: number
   }
 }
+
 // 定义表格选项
 const props = defineProps<{
   searchform: { [key: string]: any }
@@ -70,18 +84,23 @@ const searchform = reactive(props.searchform) // 搜索表单数据
 const tableData = ref(props.tableData) // 表格数据
 const tableOptions = ref(props.tableOptions) // 表格选项
 
-const doSearch = () => { // 查询
+const doSearch = () => {
+  // 查询
   console.log('submit!')
 }
-const doReset = () => { // 重置
+const doReset = () => {
+  // 重置
   console.log('reset!')
 }
-const handleSizeChange = (val: number) => { // 每页显示条数变化
+const handleSizeChange = (val: number) => {
+  // 每页显示条数变化
   console.log(`${val} items per page`)
 }
-const handleCurrentChange = (val: number) => { // 当前页变化
+const handleCurrentChange = (val: number) => {
+  // 当前页变化
   console.log(`current page: ${val}`)
 }
+
 </script>
 
 <style scoped>
