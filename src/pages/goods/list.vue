@@ -1,13 +1,6 @@
 <template>
-  <el-tabs v-model="tab">
-    <el-tab-pane
-      :label="item.name"
-      :name="item.key"
-      v-for="(item, index) in tabbars"
-      :key="index"
-    ></el-tab-pane>
-  </el-tabs>
   <search-table
+    ref="searchTableRef"
     :tableData="tableData"
     :tableOptions="tableOptions"
   />
@@ -17,8 +10,9 @@
 import { ref, onMounted } from 'vue'
 import { getGoodsList } from '@/api/goods'
 import SearchTable from '@/components/SearchTable/index.vue'
-import { singTable, searchForm } from './singTable'
+import { singTable, searchForm, tabbars } from './singTable'
 
+const searchTableRef = ref(null)
 const tableData = ref([])
 const tableOptions = ref({
   disabled: false, // 是否禁用
@@ -28,6 +22,13 @@ const tableOptions = ref({
   singTable: singTable, // 表格配置
   searchForm: searchForm, // 搜索表单配置
   api: getGoodsList, // 请求接口
+  showTabs: true, // 是否显示选项卡
+  tabSet: {
+    // 选项卡设置
+    key: 'tab',
+    defaultSelect: 'all',
+    tabbers: tabbars,
+  },
   pageSet: {
     // 分页设置
     size: [10, 20, 30, 40], // 每页显示条数选项
@@ -35,34 +36,6 @@ const tableOptions = ref({
     pageSize: 10, // 每页显示条数
   },
 })
-const tab = ref('all')
-const tabbars = [
-  {
-    key: 'all',
-    name: '全部',
-  },
-  {
-    key: 'checking',
-    name: '审核中',
-  },
-  {
-    key: 'saling',
-    name: '出售中',
-  },
-  {
-    key: 'off',
-    name: '已下架',
-  },
-  {
-    key: 'min_stock',
-    name: '库存预警',
-  },
-  {
-    key: 'delete',
-    name: '回收站',
-  },
-]
-
 onMounted(() => {})
 </script>
 

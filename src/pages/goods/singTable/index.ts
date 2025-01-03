@@ -53,3 +53,30 @@ export const searchForm = [
     ],
   },
 ]
+
+export const tabbars = [
+  {
+    key: 'all',
+    name: '全部',
+  },
+  {
+    key: 'checking',
+    name: '审核中',
+  },
+  {
+    key: 'saling',
+    name: '出售中',
+  },
+  {
+    key: 'off',
+    name: '已下架',
+  },
+  {
+    key: 'min_stock',
+    name: '库存预警',
+  },
+  {
+    key: 'delete',
+    name: '回收站',
+  },
+]

@@ -1,4 +1,5 @@
 <template>
+  <Tabs v-if="showTabs" :tabSet="tabSet" />
   <!-- 搜索 -->
   <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
     <SearchItem
@@ -89,9 +90,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, defineProps, onMounted } from 'vue'
+import { ref, defineProps, onMounted, defineExpose } from 'vue'
 import Search from '@/components/Search.vue'
 import SearchItem from '@/components/SearchItem.vue'
+import Tabs from '@/components/Tabs.vue'
 // 定义表格选项类型
 interface TableOptions {
   disabled: boolean
@@ -101,6 +103,12 @@ interface TableOptions {
   singTable: { [key: string]: any }
   searchForm: { [key: string]: any }
   api: Function
+  showTabs: boolean
+  tabSet: {
+    key: string
+    defaultSelect: string
+    tabbers: { [key: string]: any }[]
+  }
   pageSet: {
     size: number[]
     currentPage: number
@@ -117,9 +125,11 @@ const tableOptions = ref(props.tableOptions) // 表格选项
 const tableData = ref([]) // 表格数据
 const totalCount = ref(0) // 总条数
 const tLoading = ref(true) // 是否显示加载中
+const showTabs = ref(props.tableOptions.showTabs) // 是否展示选项卡
 const pageSize = ref(props.tableOptions.pageSet.pageSize) // 每页显示条数
 const currentPage = ref(props.tableOptions.pageSet.currentPage) // 当前页
 const tSearchForm = ref(props.tableOptions.searchForm) // 搜索表单
+const tabSet = ref(props.tableOptions.tabSet) // 选项卡设置
 // 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的第一个元素，searchForm2是searchForm的第二个元素开始
 const searchForm1 = ref([tSearchForm.value[0]])
 const searchForm2 = ref(tSearchForm.value.slice(1))
@@ -172,7 +182,9 @@ const handleCurrentChange = (val: number) => {
   currentPage.value = val
   getData()
 }
-
+defineExpose({
+  getData,
+})
 onMounted(() => {
   getData()
 })
