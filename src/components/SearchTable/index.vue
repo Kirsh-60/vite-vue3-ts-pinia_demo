@@ -124,17 +124,26 @@ const tSearchForm = ref(props.tableOptions.searchForm) // 搜索表单
 const searchForm1 = ref([tSearchForm.value[0]])
 const searchForm2 = ref(tSearchForm.value.slice(1))
 
-const searchForm = ref<{ [key: string]: any }>({})
-for (const key in tSearchForm.value) {
-  searchForm.value[key] = tSearchForm.value[key]
-}
+// 搜索表单
+const searchForm = ref(
+  tSearchForm.value.reduce(
+    (
+      acc: { [x: string]: any },
+      field: { model: string | number; defaultSelect: string }
+    ) => {
+      acc[field.model] = field.defaultSelect ?? '' // 如果存在 defaultSelect，则使用；否则初始化为空字符串
+      return acc
+    },
+    {}
+  )
+)
 
 async function getData() {
   // 获取数据
   tLoading.value = true
   // 获取数据
   const result = (await tableOptions.value
-    .api(currentPage.value, pageSize.value)
+    .api(currentPage.value, searchForm.value)
     .finally(() => {
       setTimeout(() => {
         tLoading.value = false
