@@ -1,37 +1,70 @@
 <template>
-  <el-form
-    :model="searchform"
-    :inline="true"
-    label-width="auto"
-    style="width: 100%"
-  >
-    <el-form-item label="用户姓名">
-      <el-input v-model="searchform.name" style="min-width: 200px" />
-    </el-form-item>
-    <el-form-item label="所在省份">
-      <el-select
-        v-model="searchform.region"
-        placeholder="请选择"
-        style="min-width: 200px"
+  <!-- 搜索 -->
+  <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
+    <SearchItem
+      v-for="(item, index) in searchForm1"
+      :label="item.label"
+      :key="index"
+    >
+      <template v-if="item.type == 'input'">
+        <el-input
+          v-model="searchForm[item.model]"
+          :placeholder="item.placeholder"
+          clearable
+        ></el-input>
+      </template>
+      <template v-else-if="item.type == 'select'">
+        <el-select
+          v-model="searchForm[item.model]"
+          :placeholder="item.placeholder"
+          clearable
+        >
+          <el-option
+            v-for="ele in item.options"
+            :key="ele.id"
+            :label="ele.label"
+            :value="ele.id"
+          >
+          </el-option>
+        </el-select>
+      </template>
+    </SearchItem>
+    <template #show>
+      <SearchItem
+        v-for="(item, index) in searchForm2"
+        :label="item.label"
+        :key="index"
       >
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="doSearch"
-        ><el-icon><Search /></el-icon>查询</el-button
-      >
-      <el-button @click="doReset"
-        ><el-icon><RefreshLeft /></el-icon>重置</el-button
-      >
-    </el-form-item>
-  </el-form>
+        <template v-if="item.type == 'input'">
+          <el-input
+            v-model="searchForm[item.model]"
+            :placeholder="item.placeholder"
+            clearable
+          ></el-input>
+        </template>
+        <template v-else-if="item.type == 'select'">
+          <el-select
+            v-model="searchForm[item.model]"
+            :placeholder="item.placeholder"
+            clearable
+          >
+            <el-option
+              v-for="ele in item.options"
+              :key="ele.value"
+              :label="ele.label"
+              :value="ele.value"
+            >
+            </el-option>
+          </el-select>
+        </template>
+      </SearchItem>
+    </template>
+  </Search>
   <el-table
     :data="tableData"
     :border="tableOptions.border"
     style="width: 100%"
-    v-loading="tableOptions.tLoading"
+    v-loading="tLoading"
   >
     <el-table-column
       v-for="(item, index) in tableOptions.singTable"
@@ -49,25 +82,26 @@
     :disabled="tableOptions.disabled"
     :background="tableOptions.background"
     layout="total, sizes, prev, pager, next, jumper"
-    :total="tableOptions.pageSet.total"
+    :total="totalCount"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
   />
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, defineProps } from 'vue'
-
+import { ref, reactive, defineProps, onMounted } from 'vue'
+import Search from '@/components/Search.vue'
+import SearchItem from '@/components/SearchItem.vue'
 // 定义表格选项类型
 interface TableOptions {
   disabled: boolean
   background: string
   tableSize: string
   border: boolean
-  tLoading: boolean
   singTable: { [key: string]: any }
+  searchForm: { [key: string]: any }
+  api: Function
   pageSet: {
-    total: number
     size: number[]
     currentPage: number
     pageSize: number
@@ -76,31 +110,63 @@ interface TableOptions {
 
 // 定义表格选项
 const props = defineProps<{
-  searchform: { [key: string]: any }
-  tableData: { [key: string]: any }
   tableOptions: TableOptions
 }>()
-const searchform = reactive(props.searchform) // 搜索表单数据
-const tableData = ref(props.tableData) // 表格数据
 const tableOptions = ref(props.tableOptions) // 表格选项
 
-const doSearch = () => {
-  // 查询
-  console.log('submit!')
-}
-const doReset = () => {
-  // 重置
-  console.log('reset!')
-}
-const handleSizeChange = (val: number) => {
-  // 每页显示条数变化
-  console.log(`${val} items per page`)
-}
-const handleCurrentChange = (val: number) => {
-  // 当前页变化
-  console.log(`current page: ${val}`)
+const tableData = ref([]) // 表格数据
+const totalCount = ref(0) // 总条数
+const tLoading = ref(true) // 是否显示加载中
+const pageSize = ref(props.tableOptions.pageSet.pageSize) // 每页显示条数
+const currentPage = ref(props.tableOptions.pageSet.currentPage) // 当前页
+const tSearchForm = ref(props.tableOptions.searchForm) // 搜索表单
+// 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的第一个元素，searchForm2是searchForm的第二个元素开始
+const searchForm1 = ref([tSearchForm.value[0]])
+const searchForm2 = ref(tSearchForm.value.slice(1))
+
+const searchForm = ref<{ [key: string]: any }>({})
+for (const key in tSearchForm.value) {
+  searchForm.value[key] = tSearchForm.value[key]
 }
 
+async function getData() {
+  // 获取数据
+  tLoading.value = true
+  // 获取数据
+  const result = (await tableOptions.value
+    .api(currentPage.value, pageSize.value)
+    .finally(() => {
+      setTimeout(() => {
+        tLoading.value = false
+      }, 200)
+    })) as any
+  tableData.value = result?.list || []
+  totalCount.value = result?.totalCount || 0
+}
+
+const resetSearchForm = () => {
+  // 重置搜索表单
+  for (const key in searchForm.value) {
+    searchForm.value[key] = ''
+  }
+  getData()
+}
+
+const handleSizeChange = (val: number) => {
+  // 每页显示条数变化
+  pageSize.value = val
+  getData()
+}
+
+const handleCurrentChange = (val: number) => {
+  // 当前页变化
+  currentPage.value = val
+  getData()
+}
+
+onMounted(() => {
+  getData()
+})
 </script>
 
 <style scoped>

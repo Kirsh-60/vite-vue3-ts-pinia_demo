@@ -8,7 +8,7 @@ import { queryParams } from '@/composables/utils'
 export function updatepassword(data: updatepassword) {
   return axios.post('/admin/updatepassword', data)
 }
-export function getGoodsList(page: any, query = {}) {
+export function getGoodsList(page: number, query = {}) {
   let r = queryParams(query)
   return axios.get(`/admin/goods/${page}${r}`)
 }
