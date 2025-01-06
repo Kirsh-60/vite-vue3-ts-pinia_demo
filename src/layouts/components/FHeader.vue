@@ -6,30 +6,28 @@
       </el-icon>
       <span>V积分管理后台</span>
     </span>
-    <el-icon v-if="isCollapse" class="icon-btn" @click="handleQuery"
-      ><Fold
-    /></el-icon>
-    <el-icon v-else class="icon-btn" @click="handleQuery"><Expand /></el-icon>
-    <el-tooltip
-      class="box-item"
-      effect="dark"
-      content="刷新"
-      placement="bottom"
-    >
+    <el-icon v-if="isCollapse" class="icon-btn" @click="handleQuery">
+      <Fold />
+    </el-icon>
+    <el-icon v-else class="icon-btn" @click="handleQuery">
+      <Expand />
+    </el-icon>
+    <el-tooltip class="box-item" effect="dark" content="刷新" placement="bottom">
       <el-icon class="icon-btn" @click="handleRefresh">
         <Refresh />
       </el-icon>
     </el-tooltip>
     <div class="ml-auto flex justify-center items-center">
-      <el-tooltip
-        class="box-item"
-        effect="dark"
-        :content="isFullscreen ? '取消全屏' : '全屏'"
-        placement="bottom"
-      >
+      <el-tooltip class="box-item" effect="dark" :content="isFullscreen ? '取消全屏' : '全屏'" placement="bottom">
         <el-icon class="icon-btn" @click="handleToggle">
           <FullScreen v-if="!isFullscreen" />
           <Aim v-else />
+        </el-icon>
+      </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" :content="isDark ? '酷夜' : '明亮'" placement="bottom">
+        <el-icon class="icon-btn" @click="toggleDark()">
+          <Sunny v-if="!isDark" />
+          <Moon v-else />
         </el-icon>
       </el-tooltip>
       <el-dropdown class="dropdown" @command="handleCommand">
@@ -50,41 +48,16 @@
     </div>
   </div>
   <!-- 抽屉弹窗 -->
-  <FormDrawer
-    ref="formDrawer"
-    :title="title"
-    destroyOnClose
-    @submit="onSubmit"
-    @close="onClose"
-  >
-    <el-form
-      size="large"
-      ref="formRef"
-      :rules="rules"
-      :model="form"
-      label-width="80px"
-    >
+  <FormDrawer ref="formDrawer" :title="title" destroyOnClose @submit="onSubmit" @close="onClose">
+    <el-form size="large" ref="formRef" :rules="rules" :model="form" label-width="80px">
       <el-form-item prop="oldpassword" label="旧密码">
-        <el-input
-          v-model="form.oldpassword"
-          placeholder="请输入旧密码"
-        ></el-input>
+        <el-input v-model="form.oldpassword" placeholder="请输入旧密码"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="新密码">
-        <el-input
-          type="password"
-          v-model="form.password"
-          placeholder="请输入密码"
-          show-password
-        ></el-input>
+        <el-input type="password" v-model="form.password" placeholder="请输入密码" show-password></el-input>
       </el-form-item>
       <el-form-item prop="repassword" label="确认密码">
-        <el-input
-          type="password"
-          v-model="form.repassword"
-          placeholder="请输入确认密码"
-          show-password
-        ></el-input>
+        <el-input type="password" v-model="form.repassword" placeholder="请输入确认密码" show-password></el-input>
       </el-form-item>
     </el-form>
   </FormDrawer>
@@ -102,6 +75,7 @@ import { useRepassword } from '@/composables/useManager'
 const { form, rules, handleLogout } = useRepassword()
 const router = useRouter()
 const store = useUserInfoStore()
+import { isDark,toggleDark } from '@/composables'
 // isFullscreen:是否全屏状态 toggle：转态切换
 const { isFullscreen, toggle } = useFullscreen()
 let title = ref('修改密码')

@@ -46,7 +46,7 @@ onMounted(() => {
 <style scoped>
 .main-content {
   padding: 20px;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 6px;
   height: auto;
 }

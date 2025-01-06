@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import 'element-plus/dist/index.css'
 
 // 路由检验
 import './permission'
@@ -22,6 +21,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 // 引入 Element Plus 语言包
 import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import zhCn from '@element-plus/locale/lang/zh-cn'
 
 const app = createApp(App, {})

@@ -54,7 +54,7 @@ const handlerSelect = (e) => {
   left: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  @apply shadow-md fixed bg-light-50;
+  @apply shadow-md fixed ;
   border-right: solid 1px var(--el-menu-border-color);
 }
 
