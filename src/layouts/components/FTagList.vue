@@ -3,18 +3,11 @@
   <div class="f-tag-list" :style="{ left: store.asideWidth, backgroundColor: isDark ? '' : '#f3f4f6' }">
     <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab" @tab-change="changeTab"
       style="min-width: 200px">
-      <div v-if="isDark" class="darkClass">
-        <el-tab-pane v-for="item in tablist" :key="item.path" :closable="item.path != '/'" :label="item.title"
-          :name="item.path">
-        </el-tab-pane>
-      </div>
-      <div v-else class="lightClass">
-        <el-tab-pane v-for="item in tablist" :key="item.path" :closable="item.path != '/'" :label="item.title"
-          :name="item.path">
-        </el-tab-pane>
-      </div>
+      <el-tab-pane v-for="item in tablist" :key="item.path" :closable="item.path != '/'" :label="item.title"
+        :name="item.path">
+      </el-tab-pane>
     </el-tabs>
-    <span class="tag-btn">
+    <span :class="isDark?'tag-btn-dark':'tag-btn'">
       <el-dropdown @command="handelClose">
         <span class="el-dropdown-link">
           <el-icon>
@@ -55,6 +48,11 @@ const { tablist, activeTab, removeTab, changeTab, handelClose } = useTagList()
   height: 32px;
 }
 
+.tag-btn-dark {
+  @apply bg-blue-gray-800 rounded ml-auto flex items-center justify-center px-2;
+  height: 32px;
+}
+
 ::v-deep(.el-tabs__header) {
   margin-bottom: 0;
   line-height: 38px;
@@ -65,14 +63,14 @@ const { tablist, activeTab, removeTab, changeTab, handelClose } = useTagList()
   border: 0 !important;
 }
 
-::v-deep(.darkClass > .el-tabs__item) {
+::v-deep(.el-tabs__item) {
   border: 0 !important;
   height: 32px;
   line-height: 32px;
   @apply ml-1 rounded-lg;
 }
 
-::v-deep(.lightClass > .el-tabs__item) {
+/* ::v-deep(.el-tabs__item) {
   border: 0 !important;
   height: 32px;
   line-height: 32px;
@@ -82,5 +80,6 @@ const { tablist, activeTab, removeTab, changeTab, handelClose } = useTagList()
 ::v-deep(.is-disabled) {
   cursor: not-allowed;
   @apply text-gray-300;
-}
+} */
+
 </style>

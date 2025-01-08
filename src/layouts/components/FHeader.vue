@@ -1,5 +1,5 @@
 <template>
-  <div class="f-header">
+  <div class="f-header" :style="{ backgroundColor: isDark ? '#121212' : '#4338ca' }">
     <span class="logo">
       <el-icon class="mr-2">
         <ElemeFilled />
@@ -75,7 +75,7 @@ import { useRepassword } from '@/composables/useManager'
 const { form, rules, handleLogout } = useRepassword()
 const router = useRouter()
 const store = useUserInfoStore()
-import { isDark,toggleDark } from '@/composables'
+import { isDark, toggleDark } from '@/composables'
 // isFullscreen:是否全屏状态 toggle：转态切换
 const { isFullscreen, toggle } = useFullscreen()
 let title = ref('修改密码')
@@ -140,7 +140,7 @@ function onSubmit() {
 </script>
 <style scoped>
 .f-header {
-  @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
+  @apply flex items-center text-light-50 fixed top-0 left-0 right-0;
   height: 64px;
   z-index: 2;
 }
