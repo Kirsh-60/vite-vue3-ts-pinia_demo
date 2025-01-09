@@ -22,7 +22,7 @@
     </el-row>
     </el-form>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref,useSlots } from 'vue';
 defineProps({
     model:Object
@@ -31,6 +31,6 @@ defineProps({
 defineEmits(["search","reset"])
 const showSearch = ref(false)
 
-const slots = useSlots()
+const slots = useSlots() as Record<string, any>
 const hasShowSearch = ref(!!slots.show)
 </script>

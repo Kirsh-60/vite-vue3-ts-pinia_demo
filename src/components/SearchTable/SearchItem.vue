@@ -5,7 +5,7 @@
         </el-form-item>
     </el-col>
 </template>
-<script setup>
+<script setup lang="ts">
     defineProps({
         label:String
     })

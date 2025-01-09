@@ -3,6 +3,7 @@ export const singTable = [
     label: '商品',
     prop: 'title',
     width: 400,
+    custom: true,
   },
   {
     label: '实际销量',
@@ -23,12 +24,15 @@ export const singTable = [
     label: '操作',
     prop: 'desc',
     width: 200,
+    fixed: 'right',
+    align: 'center',
   },
 ]
+
 export const searchForm = [
   {
     label: '商品名称',
-    model: 'goodsName',
+    model: 'title',
     type: 'input',
   },
   {
