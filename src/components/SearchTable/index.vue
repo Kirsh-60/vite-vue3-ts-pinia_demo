@@ -27,20 +27,21 @@
       </SearchItem>
     </template>
   </Search>
-  <!-- <Table :tableData="tableData" :tableOptions="tableOptions" v-model:tLoading="tLoading" :totalCount="totalCount"
-    :showOperate="tableOptions.showOperate" @current-change="currenetChange" @size-change="sizeChange">
-    <template v-for="(slotContent, idx) in tableData" :key="idx" v-slot:['title']="scope">
-      {{ scope }}
-    </template>
-  </Table> -->
   <el-table :data="tableData" :border="tableOptions.border" style="width: 100%" v-loading="tLoading">
+    <el-table-column type="index" width="60" label="序号" align="center" />
     <el-table-column v-for="(item, index) in tableOptions.singTable" :key="index" :prop="item.prop" :label="item.label"
-      :width="item.width" :fixed="item.fixed" :align="item.align">
+      :width="item.width" :fixed="item.fixed" :align="item.align"
+      :show-overflow-tooltip="item.showOverflowTooltip || true">
       <template v-if="item.custom" #default="scope">
         <slot :name="item.prop" :scope="scope" />
       </template>
     </el-table-column>
   </el-table>
+  <el-pagination v-model:current-page="tableOptions.pageSet.currentPage"
+    v-model:page-size="tableOptions.pageSet.pageSize" :page-sizes="tableOptions.pageSet.size"
+    :size="tableOptions.tableSize" :disabled="tableOptions.disabled" :background="tableOptions.background"
+    layout="total, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
+    @current-change="handleCurrentChange" />
 </template>
 
 <script lang="ts" setup>
@@ -49,7 +50,6 @@ import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
 import Tabs from './Tabs.vue'
 
-// import Table from '@/components/SearchTable/Table.vue'
 // 定义表格选项类型
 /**
  * 表格选项接口
@@ -168,13 +168,13 @@ const resetSearchForm = () => {
   getData()
 }
 
-const sizeChange = (val: number) => {
+const handleSizeChange = (val: number) => {
   // 每页显示条数变化
   pageSize.value = val
   getData()
 }
 
-const currenetChange = (val: number) => {
+const handleCurrentChange = (val: number) => {
   // 当前页变化
   currentPage.value = val
   getData()
@@ -193,7 +193,14 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  /* 使用 flex-end 代替 right */
+}
+</style>
 
 export default {
 name: 'SearchTable'
