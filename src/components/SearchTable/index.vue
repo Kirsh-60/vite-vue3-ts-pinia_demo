@@ -1,5 +1,4 @@
 <template>
-  <Tabs v-if="showTabs" :tabSet="tabSet" @tabChange="tabChange" />
   <!-- 搜索 -->
   <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
     <SearchItem v-for="(item, index) in searchForm1" :label="item.label" :key="index">
@@ -27,23 +26,27 @@
       </SearchItem>
     </template>
   </Search>
-  <Table :tableData="tableData" :tableOptions="tableOptions" v-model:tLoading="tLoading" :totalCount="totalCount"
+  <!-- <Table :tableData="tableData" :tableOptions="tableOptions" v-model:tLoading="tLoading" :totalCount="totalCount"
     :showOperate="tableOptions.showOperate" @current-change="currenetChange" @size-change="sizeChange">
-    <template v-for="(slotContent, idx) in dynamicSlots" :key="idx" v-slot:[slotContent.prop]>
-      <slot :name="slotContent.prop" :scope="tableData[idx++]" />
+    <template v-for="(slotContent, idx) in tableData" :key="idx" v-slot:['title']="scope">
+      {{ scope }}
     </template>
-    <!-- <template #desc>
-      <el-button type="primary" link>编辑</el-button>
-    </template> -->
-  </Table>
+  </Table> -->
+  <el-table :data="tableData" :border="tableOptions.border" style="width: 100%" v-loading="tLoading">
+    <el-table-column v-for="(item, index) in tableOptions.singTable" :key="index" :prop="item.prop" :label="item.label"
+      :width="item.width" :fixed="item.fixed" :align="item.align">
+      <template v-if="item.custom" #default="scope">
+        <slot :name="item.prop" :scope="scope" />
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script lang="ts" setup>
 import { ref, defineProps, onMounted, defineExpose } from 'vue'
 import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
-import Tabs from '@/components/SearchTable/Tabs.vue'
-import Table from '@/components/SearchTable/Table.vue'
+// import Table from '@/components/SearchTable/Table.vue'
 // 定义表格选项类型
 /**
  * 表格选项接口
@@ -117,7 +120,7 @@ const dynamicSlots = ref<{ prop: string; tIndex: number }[]>([])
 
 if (tableOptions.value.singTable && Array.isArray(tableOptions.value.singTable)) {
   tableOptions.value.singTable.forEach((item: any, index: number) => {
-    if(item.custom === true){
+    if (item.custom === true) {
       dynamicSlots.value.push({ prop: item.prop, tIndex: index })
     }
   })

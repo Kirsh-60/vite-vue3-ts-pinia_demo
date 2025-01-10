@@ -1,10 +1,12 @@
 <template>
   <search-table ref="searchTableRef" :tableData="tableData" :tableOptions="tableOptions">
-    <template v-slot:title="{ scope }">
-      {{ scope.title }}
+    <template #title="{ scope }">
+      {{ scope.row.title }}
     </template>
-    <template v-slot:desc="{ scope }">
-      <el-button type="primary" link>编辑</el-button>
+    <template #desc="{ scope }">
+      <el-button v-if="scope.row.title != '111'" type="primary" text="primary" link>
+        编辑
+      </el-button>
     </template>
   </search-table>
 </template>

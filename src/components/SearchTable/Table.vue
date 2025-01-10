@@ -4,15 +4,15 @@
         <el-table-column v-for="(item, index) in props.tableOptions.singTable" :key="index" :prop="item.prop"
             :label="item.label" :width="item.width" :fixed="item.fixed" :align="item.align">
             <template v-if="item.custom">
-                <slot :name="item.prop" :scope="{ row, $index }"/>
+                <slot :name="item.prop" :scope="{ item, index }" />
             </template>
         </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="props.tableOptions.pageSet.currentPage"
         v-model:page-size="props.tableOptions.pageSet.pageSize" :page-sizes="props.tableOptions.pageSet.size"
         :size="props.tableOptions.tableSize" :disabled="props.tableOptions.disabled"
-        :background="props.tableOptions.background" layout="total, prev, pager, next, jumper"
-        :total="props.totalCount" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+        :background="props.tableOptions.background" layout="total, prev, pager, next, jumper" :total="props.totalCount"
+        @size-change="handleSizeChange" @current-change="handleCurrentChange" />
 </template>
 
 <script setup lang="ts">
