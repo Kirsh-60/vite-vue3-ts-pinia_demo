@@ -26,6 +26,7 @@ export const singTable = [
     width: 200,
     fixed: 'right',
     align: 'center',
+    custom: true,
   },
 ]
 

@@ -29,12 +29,12 @@
   </Search>
   <Table :tableData="tableData" :tableOptions="tableOptions" v-model:tLoading="tLoading" :totalCount="totalCount"
     :showOperate="tableOptions.showOperate" @current-change="currenetChange" @size-change="sizeChange">
-    <template v-for="(slotContent, index) in dynamicSlots" :key="index" v-slot:[slotContent.prop]>
-      <slot :name="slotContent.prop" :scope="tableData[index]" />
+    <template v-for="(slotContent, idx) in dynamicSlots" :key="idx" v-slot:[slotContent.prop]>
+      <slot :name="slotContent.prop" :scope="tableData[idx++]" />
     </template>
-    <template #desc>
+    <!-- <template #desc>
       <el-button type="primary" link>编辑</el-button>
-    </template>
+    </template> -->
   </Table>
 </template>
 
@@ -117,10 +117,12 @@ const dynamicSlots = ref<{ prop: string; tIndex: number }[]>([])
 
 if (tableOptions.value.singTable && Array.isArray(tableOptions.value.singTable)) {
   tableOptions.value.singTable.forEach((item: any, index: number) => {
-    dynamicSlots.value.push({ prop: item.prop, tIndex: index })
+    if(item.custom === true){
+      dynamicSlots.value.push({ prop: item.prop, tIndex: index })
+    }
   })
 }
-
+console.log(dynamicSlots.value, 'dynamicSlots')
 
 // 搜索表单
 const searchForm = ref(
@@ -186,3 +188,7 @@ onMounted(() => {
 </script>
 
 <style scoped></style>
+
+export default {
+name: 'SearchTable'
+}

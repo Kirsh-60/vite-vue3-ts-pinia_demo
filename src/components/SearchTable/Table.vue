@@ -4,10 +4,7 @@
         <el-table-column v-for="(item, index) in props.tableOptions.singTable" :key="index" :prop="item.prop"
             :label="item.label" :width="item.width" :fixed="item.fixed" :align="item.align">
             <template v-if="item.custom">
-                <slot :name="item.prop" />
-            </template>
-            <template v-if="item.prop === 'desc'">
-                <slot name="desc" />
+                <slot :name="item.prop" :scope="{ row, $index }"/>
             </template>
         </el-table-column>
     </el-table>

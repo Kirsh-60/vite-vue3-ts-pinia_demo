@@ -41,6 +41,7 @@ const { tablist, activeTab, removeTab, changeTab, handelClose } = useTagList()
   right: 0;
   height: 44px;
   z-index: 100;
+  background: #121212;
 }
 
 .tag-btn {

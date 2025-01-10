@@ -1,7 +1,10 @@
 <template>
   <search-table ref="searchTableRef" :tableData="tableData" :tableOptions="tableOptions">
     <template v-slot:title="{ scope }">
-      <pre>{{ scope.title }}</pre> <!-- 调试 scope 内容 -->
+      {{ scope.title }}
+    </template>
+    <template v-slot:desc="{ scope }">
+      <el-button type="primary" link>编辑</el-button>
     </template>
   </search-table>
 </template>

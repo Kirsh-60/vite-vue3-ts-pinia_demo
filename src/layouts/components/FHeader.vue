@@ -142,7 +142,7 @@ function onSubmit() {
 .f-header {
   @apply flex items-center text-light-50 fixed top-0 left-0 right-0;
   height: 64px;
-  z-index: 2;
+  z-index: 999;
 }
 
 .logo {
