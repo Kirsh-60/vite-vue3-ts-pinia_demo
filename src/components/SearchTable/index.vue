@@ -27,6 +27,7 @@
       </SearchItem>
     </template>
   </Search>
+  <div class="select-bar"></div>
   <el-table :data="tableData" :border="tableConfig.border" style="width: 100%" v-loading="tLoading"
     @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="55" />
@@ -197,6 +198,11 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   /* 使用 flex-end 代替 right */
+}
+.select-bar{
+  width: 100%;
+  height: 20px;
+  background-color: #04395e;
 }
 </style>
 
