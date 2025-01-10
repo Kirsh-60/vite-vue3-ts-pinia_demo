@@ -27,9 +27,9 @@
       </SearchItem>
     </template>
   </Search>
-  <el-table :data="tableData" :border="tableOptions.border" style="width: 100%" v-loading="tLoading">
+  <el-table :data="tableData" :border="tableConfig.border" style="width: 100%" v-loading="tLoading">
     <el-table-column type="index" width="60" label="序号" align="center" />
-    <el-table-column v-for="(item, index) in tableOptions.singTable" :key="index" :prop="item.prop" :label="item.label"
+    <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop" :label="item.label"
       :width="item.width" :fixed="item.fixed" :align="item.align"
       :show-overflow-tooltip="item.showOverflowTooltip || true">
       <template v-if="item.custom" #default="scope">
@@ -39,7 +39,7 @@
   </el-table>
   <el-pagination v-model:current-page="tableOptions.pageSet.currentPage"
     v-model:page-size="tableOptions.pageSet.pageSize" :page-sizes="tableOptions.pageSet.size"
-    :size="tableOptions.tableSize" :disabled="tableOptions.disabled" :background="tableOptions.background"
+    :size="tableConfig.tableSize" :disabled="tableConfig.disabled" :background="tableConfig.background"
     layout="total, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
     @current-change="handleCurrentChange" />
 </template>
@@ -66,14 +66,16 @@ import Tabs from './Tabs.vue'
  * @property {{ size: number[], currentPage: number, pageSize: number }} pageSet - 分页设置
  */
 interface TableOptions {
-  disabled: boolean
-  background: string
-  tableSize: string
-  border: boolean
-  singTable: any
-  searchForm: { [key: string]: any }
-  api: Function
-  showOperate: boolean
+  tableConfig: {
+    singTable: any
+    api: Function
+    showOperate: boolean
+    disabled: boolean
+    tableSize: string
+    border: boolean
+    background: string
+    searchForm: { [key: string]: any }
+  }
   tabSet: {
     key: string
     defaultSelect: string
@@ -90,7 +92,7 @@ interface TableOptions {
 const props = defineProps<{
   tableOptions: TableOptions
 }>()
-const tableOptions = ref(props.tableOptions) // 表格选项
+const tableConfig = ref(props.tableOptions.tableConfig) // 表格配置
 
 const tableData = ref([]) // 表格数据
 const pageSize = ref(10) // 每页显示条数
@@ -98,7 +100,7 @@ const currentPage = ref(1) // 当前页
 const totalCount = ref(0) // 总条数
 const tLoading = ref(true) // 是否显示加载中
 
-const tSearchForm = ref(props.tableOptions.searchForm) // 搜索表单
+const tSearchForm = ref(tableConfig.value.searchForm) // 搜索表单
 
 // 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的第一个元素，searchForm2是searchForm的第二个元素开始
 const searchData = ref({})
@@ -121,8 +123,8 @@ if (tabSet.value) {
 // 收集tableOptions中的singTable数组对象中的 custom: true的对象，将prop和其所在的下标抽出来生成一个对象放进dynamicSlots
 const dynamicSlots = ref<{ prop: string; tIndex: number }[]>([])
 
-if (tableOptions.value.singTable && Array.isArray(tableOptions.value.singTable)) {
-  tableOptions.value.singTable.forEach((item: any, index: number) => {
+if (tableConfig.value.singTable && Array.isArray(tableConfig.value.singTable)) {
+  tableConfig.value.singTable.forEach((item: any, index: number) => {
     if (item.custom === true) {
       dynamicSlots.value.push({ prop: item.prop, tIndex: index })
     }
@@ -149,7 +151,7 @@ async function getData() {
   tLoading.value = true
   searchData.value = { ...tabData.value, ...searchForm.value }
   // 获取数据
-  const result = (await tableOptions.value
+  const result = (await tableConfig.value
     .api(currentPage.value, searchData.value)
     .finally(() => {
       setTimeout(() => {

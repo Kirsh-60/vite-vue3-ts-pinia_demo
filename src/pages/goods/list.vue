@@ -20,14 +20,16 @@ import { singTable, searchForm, tabbars } from './singTable'
 const searchTableRef = ref(null)
 const tableData = ref([])
 const tableOptions = ref({
-  disabled: false, // 是否禁用
-  background: "", // 表格样式
-  tableSize: '', // 表格尺寸
-  border: true, // 是否显示纵向边框
-  singTable: singTable, // 表格配置
-  searchForm: searchForm, // 搜索表单配置
-  showOperate: true, // 是否显示操作列
-  api: getGoodsList, // 请求接口
+  tableConfig: {
+    background: "", // 表格样式
+    tableSize: '', // 表格尺寸
+    border: true, // 是否显示纵向边框
+    singTable: singTable, // 表格配置
+    searchForm: searchForm, // 搜索表单配置
+    showOperate: true, // 是否显示操作列
+    disabled: false, // 是否禁用
+    api: getGoodsList, // 请求接口
+  },
   tabSet: {
     // 选项卡设置
     key: 'tab',
