@@ -1,4 +1,5 @@
 <template>
+  <Tabs v-if="showTabs" :tabSet="tabSet" @tabChange="tabChange" />
   <!-- 搜索 -->
   <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
     <SearchItem v-for="(item, index) in searchForm1" :label="item.label" :key="index">
@@ -46,6 +47,8 @@
 import { ref, defineProps, onMounted, defineExpose } from 'vue'
 import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
+import Tabs from './Tabs.vue'
+
 // import Table from '@/components/SearchTable/Table.vue'
 // 定义表格选项类型
 /**
