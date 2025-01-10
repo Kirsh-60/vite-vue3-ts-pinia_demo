@@ -11,7 +11,7 @@ export const singTable = [
     label: '商品',
     prop: 'title',
     width: 400,
-    showOverflowTooltip: false,
+    ellipsis: false,
     custom: true,
   },
   {

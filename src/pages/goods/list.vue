@@ -28,6 +28,7 @@ const tableOptions = ref({
     searchForm: searchForm, // 搜索表单配置
     showOperate: true, // 是否显示操作列
     disabled: false, // 是否禁用
+    showIndex: true, // 是否显示序号
     api: getGoodsList, // 请求接口
   },
   tabSet: {

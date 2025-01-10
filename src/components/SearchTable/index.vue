@@ -27,11 +27,12 @@
       </SearchItem>
     </template>
   </Search>
-  <el-table :data="tableData" :border="tableConfig.border" style="width: 100%" v-loading="tLoading">
-    <el-table-column type="index" width="60" label="序号" align="center" />
+  <el-table :data="tableData" :border="tableConfig.border" style="width: 100%" v-loading="tLoading"
+    @selection-change="handleSelectionChange">
+    <el-table-column type="selection" width="55" />
+    <el-table-column v-if="showIndex" fixed type="index" width="60" label="序号" align="center" />
     <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop" :label="item.label"
-      :width="item.width" :fixed="item.fixed" :align="item.align"
-      :show-overflow-tooltip="item.showOverflowTooltip || true">
+      :width="item.width" :fixed="item.fixed" :align="item.align" :show-overflow-tooltip="item.ellipsis || true">
       <template v-if="item.custom" #default="scope">
         <slot :name="item.prop" :scope="scope" />
       </template>
@@ -50,6 +51,7 @@ import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
 import Tabs from './Tabs.vue'
 
+// #region
 // 定义表格选项类型
 /**
  * 表格选项接口
@@ -74,6 +76,7 @@ interface TableOptions {
     tableSize: string
     border: boolean
     background: string
+    showIndex: boolean
     searchForm: { [key: string]: any }
   }
   tabSet: {
@@ -100,6 +103,8 @@ const currentPage = ref(1) // 当前页
 const totalCount = ref(0) // 总条数
 const tLoading = ref(true) // 是否显示加载中
 
+const showIndex = ref(tableConfig.value.showIndex || false) // 是否显示序号
+
 const tSearchForm = ref(tableConfig.value.searchForm) // 搜索表单
 
 // 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的第一个元素，searchForm2是searchForm的第二个元素开始
@@ -119,19 +124,6 @@ if (tabSet.value) {
 } else {
   tabData.value = {}
 }
-
-// 收集tableOptions中的singTable数组对象中的 custom: true的对象，将prop和其所在的下标抽出来生成一个对象放进dynamicSlots
-const dynamicSlots = ref<{ prop: string; tIndex: number }[]>([])
-
-if (tableConfig.value.singTable && Array.isArray(tableConfig.value.singTable)) {
-  tableConfig.value.singTable.forEach((item: any, index: number) => {
-    if (item.custom === true) {
-      dynamicSlots.value.push({ prop: item.prop, tIndex: index })
-    }
-  })
-}
-console.log(dynamicSlots.value, 'dynamicSlots')
-
 // 搜索表单
 const searchForm = ref(
   tSearchForm.value.reduce(
@@ -145,9 +137,11 @@ const searchForm = ref(
     {}
   )
 )
+//#endregion
 
-async function getData() {
-  // 获取数据
+
+
+async function getData() { // 获取数据
   tLoading.value = true
   searchData.value = { ...tabData.value, ...searchForm.value }
   // 获取数据
@@ -162,30 +156,32 @@ async function getData() {
   totalCount.value = result?.totalCount || 0
 }
 
-const resetSearchForm = () => {
-  // 重置搜索表单
+const resetSearchForm = () => { // 重置搜索表单
   for (const key in searchForm.value) {
     searchForm.value[key] = ''
   }
   getData()
 }
 
-const handleSizeChange = (val: number) => {
-  // 每页显示条数变化
+const handleSizeChange = (val: number) => { // 每页显示条数变化
   pageSize.value = val
   getData()
 }
 
-const handleCurrentChange = (val: number) => {
-  // 当前页变化
+const handleCurrentChange = (val: number) => {// 当前页变化
   currentPage.value = val
   getData()
 }
 
-const tabChange = (val: string) => {
-  // 选项卡变化
+const tabChange = (val: string) => { // 选项卡变化
   tabData.value.tab = val
   getData()
+}
+
+
+const multipleSelection = ref<any[]>([])
+const handleSelectionChange = (val: any) => {
+  multipleSelection.value = val
 }
 defineExpose({
   getData,
