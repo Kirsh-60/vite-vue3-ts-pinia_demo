@@ -68,7 +68,7 @@ const { tablist, activeTab, removeTab, changeTab, handelClose } = useTagList()
   border: 0 !important;
   height: 32px;
   line-height: 32px;
-  @apply ml-1 rounded-lg;
+  @apply bg-white ml-1 rounded-lg;
 }
 
 /* ::v-deep(.el-tabs__item) {

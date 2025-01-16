@@ -27,11 +27,54 @@
       </SearchItem>
     </template>
   </Search>
-  <div class="select-bar"></div>
-  <el-table :data="tableData" :border="tableConfig.border" style="width: 100%" v-loading="tLoading"
-    @selection-change="handleSelectionChange">
-    <el-table-column type="selection" width="55" />
-    <el-table-column v-if="showIndex" fixed type="index" width="60" label="序号" align="center" />
+  <div class="flex justify-between self-center h-8">
+    <div>{{ tableConfig.tableName }}</div>
+    <div class="flex self-center">
+      <el-tooltip class="box-item" effect="dark" content="刷新表格" placement="top">
+        <el-button link @click="refreshTable()">
+          <el-icon>
+            <Refresh />
+          </el-icon>
+        </el-button>
+      </el-tooltip>
+      <i class="px-2"></i>
+      <el-tooltip class="box-item px-6  " effect="dark" content="调整间距" placement="top">
+        <el-dropdown placement="bottom-start" @command="operationTable">
+          <el-button link>
+            <el-icon>
+              <Operation />
+            </el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="zc">紧凑</el-dropdown-item>
+              <el-dropdown-item command="mr">默认</el-dropdown-item>
+              <el-dropdown-item command="ks">宽松</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </el-tooltip>
+      <i class="px-2"></i>
+      <el-tooltip class="box-item" effect="dark" content="自定义列" placement="top">
+        <el-button link @click="diyTable()">
+          <el-icon>
+            <Setting />
+          </el-icon>
+        </el-button>
+      </el-tooltip>
+    </div>
+  </div>
+  <div v-if="tableConfig.showSelect" :class="isDark ? 'select-bar-dark' : 'select-bar'">
+    <el-icon style="color:#409eff" class="ml-1">
+      <WarningFilled />
+    </el-icon>
+    <text class="px-2 text-sm">已选中&nbsp;{{ selectList }}&nbsp;条记录(可跨页)</text>
+    <el-button type="primary" link @click="toggleSelection()">清空</el-button>
+  </div>
+  <el-table ref="multipleTableRef" :data="tableData" :border="tableConfig.border" :row-key="indexMethod"
+    style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"  @selection-change="handleSelectionChange">
+    <el-table-column v-if="tableConfig.showSelect" type="selection" :reserve-selection="true" width="55" />
+    <el-table-column v-if="showIndex" fixed type="index" :index="indexMethod" width="60" label="序号" align="center" />
     <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop" :label="item.label"
       :width="item.width" :fixed="item.fixed" :align="item.align" :show-overflow-tooltip="item.ellipsis || true">
       <template v-if="item.custom" #default="scope">
@@ -51,7 +94,8 @@ import { ref, defineProps, onMounted, defineExpose } from 'vue'
 import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
 import Tabs from './Tabs.vue'
-
+import type { TableInstance } from 'element-plus'
+import { isDark } from '@/composables';
 // #region
 // 定义表格选项类型
 /**
@@ -70,6 +114,7 @@ import Tabs from './Tabs.vue'
  */
 interface TableOptions {
   tableConfig: {
+    tableName: string
     singTable: any
     api: Function
     showOperate: boolean
@@ -78,6 +123,8 @@ interface TableOptions {
     border: boolean
     background: string
     showIndex: boolean
+    showSelect: boolean
+    stripe: boolean
     searchForm: { [key: string]: any }
   }
   tabSet: {
@@ -103,6 +150,11 @@ const pageSize = ref(10) // 每页显示条数
 const currentPage = ref(1) // 当前页
 const totalCount = ref(0) // 总条数
 const tLoading = ref(true) // 是否显示加载中
+
+const multipleTableRef = ref<TableInstance>()
+const multipleSelection = ref<any[]>([]) // 选中项列表
+const selectList = ref(0) // 选中项列数
+
 
 const showIndex = ref(tableConfig.value.showIndex || false) // 是否显示序号
 
@@ -138,6 +190,9 @@ const searchForm = ref(
     {}
   )
 )
+const indexMethod = (index: number) => { // 序号
+  return index + 1 + (currentPage.value - 1) * pageSize.value;
+}
 //#endregion
 
 
@@ -174,22 +229,63 @@ const handleCurrentChange = (val: number) => {// 当前页变化
   getData()
 }
 
+const refreshTable = () => { // 刷新表格
+  getData()
+}
+
+const diyTable = ()=>{ // 自定义表格
+
+}
+
+const operationTable = (c: any) => { // 操作表格调整表格size
+  switch (c) {
+    case 'zc':
+      tableConfig.value.tableSize = 'small'
+      break
+    case 'mr':
+      tableConfig.value.tableSize = 'default'
+      break
+    case 'ks':
+      tableConfig.value.tableSize = 'large'
+      break
+    default:
+      break
+  }
+}
+
+
 const tabChange = (val: string) => { // 选项卡变化
   tabData.value.tab = val
   getData()
 }
 
 
-const multipleSelection = ref<any[]>([])
-const handleSelectionChange = (val: any) => {
+const handleSelectionChange = (val: any) => {// 这里可以根据需要处理选中项的变化
+  selectList.value = val.length
   multipleSelection.value = val
 }
+const toggleSelection = (rows?: any[], ignoreSelectable?: boolean) => {
+  if (rows) {
+    rows.forEach((row) => {
+      multipleTableRef.value!.toggleRowSelection(
+        row,
+        undefined,
+        ignoreSelectable
+      )
+    })
+  } else {
+    multipleTableRef.value!.clearSelection()
+  }
+}
+
+
 defineExpose({
   getData,
 })
 onMounted(() => {
   getData()
 })
+
 </script>
 
 <style scoped>
@@ -199,10 +295,23 @@ onMounted(() => {
   justify-content: flex-end;
   /* 使用 flex-end 代替 right */
 }
-.select-bar{
+
+.select-bar {
   width: 100%;
-  height: 20px;
-  background-color: #04395e;
+  height: 34px;
+  background-color: #e6f7ff;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.select-bar-dark {
+  width: 100%;
+  height: 34px;
+  background-color: #121212;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
 }
 </style>
 
