@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import WindiCSS from 'vite-plugin-windicss'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import path from 'path'
 // 这里使用nodejs的模块，可能会报错，需要安装node的类型声明文件
 // *********************************** 路径配置新增 start
 import { resolve } from 'path'
@@ -13,7 +15,16 @@ const alias: Record<string, string> = {
   '@': pathResolve('src'),
 }
 export default defineConfig({
-  plugins: [vue(), WindiCSS()],
+  plugins: [
+    vue(),
+    WindiCSS(),
+    createSvgIconsPlugin({
+      // 图标文件夹为src/assets/icons
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+      // 指定symbolId格式
+      symbolId: 'icon-[name]',
+    }),
+  ],
   resolve: {
     alias, // ****************** 路径配置新增
   },

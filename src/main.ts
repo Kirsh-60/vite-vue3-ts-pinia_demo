@@ -6,7 +6,7 @@ import './permission'
 
 // 引入第三方css库
 import 'virtual:windi.css'
-
+import 'virtual:svg-icons-register'
 // 引入router
 import { router } from './router'
 
@@ -32,10 +32,14 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 
+// 引入全局样式 svg
+import svgIcon from '@/components/SvgIcon/index.vue'
+app.component('SvgIcon', svgIcon)
+
 // 挂载
-app.use(router);
+app.use(router)
 app.use(ElementPlus, {
   locale: zhCn,
-});
-app.use(pinia);
+})
+app.use(pinia)
 app.mount('#app')
