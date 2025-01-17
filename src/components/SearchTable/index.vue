@@ -28,7 +28,10 @@
     </template>
   </Search>
   <div class="flex justify-between self-center h-8">
-    <div>{{ tableConfig.tableName }}</div>
+    <!-- <div>{{ tableConfig.tableName }}</div> -->
+    <div>
+      <slot name="handleOptions" />
+    </div>
     <div class="flex self-center">
       <el-tooltip class="box-item" effect="dark" content="刷新表格" placement="top">
         <el-button link @click="refreshTable()">
@@ -72,7 +75,8 @@
     <el-button type="primary" link @click="toggleSelection()">清空</el-button>
   </div>
   <el-table ref="multipleTableRef" :data="tableData" :border="tableConfig.border" :row-key="indexMethod"
-    style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"  @selection-change="handleSelectionChange">
+    style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"
+    @selection-change="handleSelectionChange">
     <el-table-column v-if="tableConfig.showSelect" type="selection" :reserve-selection="true" width="55" />
     <el-table-column v-if="showIndex" fixed type="index" :index="indexMethod" width="60" label="序号" align="center" />
     <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop" :label="item.label"
@@ -233,7 +237,7 @@ const refreshTable = () => { // 刷新表格
   getData()
 }
 
-const diyTable = ()=>{ // 自定义表格
+const diyTable = () => { // 自定义表格
 
 }
 

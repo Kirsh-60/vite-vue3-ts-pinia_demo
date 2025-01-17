@@ -1,10 +1,18 @@
 <template>
   <search-table ref="searchTableRef" :tableData="tableData" :tableOptions="tableOptions">
+    <template #handleOptions>
+      <el-button size="small" type="primary" @click="handleAdd()">新增</el-button>
+      <el-button size="small" @click="handleAvidete()">表单校验</el-button>
+      <el-button size="small" @click="handleAvidete()">获取数据</el-button>
+      <el-button size="small" @click="handleAvidete()">设置值</el-button>
+      <el-button size="small" @click="handleAvidete()">清空选中</el-button>
+    </template>
+
     <template #title="{ scope }">
       {{ scope.row.title }}
     </template>
     <template #desc="{ scope }">
-      <el-button v-if="scope.row.title != '111'" type="primary" text="primary" link>
+      <el-button v-if="scope.row.title != '111'" type="primary" text="primary" link @click="editOrder()">
         编辑
       </el-button>
     </template>
@@ -30,7 +38,7 @@ const tableOptions = ref({
     showOperate: true, // 是否显示操作列
     disabled: false, // 是否禁用
     showIndex: false, // 是否显示序号
-    showSelect:false, // 是否显示选择框
+    showSelect: false, // 是否显示选择框
     stripe: true, // 是否斑马线
     api: getGoodsList, // 请求接口
   },
@@ -47,6 +55,14 @@ const tableOptions = ref({
     pageSize: 10, // 每页显示条数
   },
 })
+function editOrder() {
+  console.log('编辑')
+}
+function handleAdd() {
+  console.log('新增')
+}
+function handleAvidete() {
+}
 onMounted(() => { })
 </script>
 
