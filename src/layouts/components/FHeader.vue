@@ -30,6 +30,11 @@
           <Moon v-else />
         </el-icon>
       </el-tooltip>
+      <el-tooltip class="box-item" effect="dark" :content="lang != 'zh' ? '切换英语' : 'Language chinese'" placement="bottom">
+        <el-icon class="icon-btn" @click="handleLanguage">
+          <SvgIcon name="ch" color="white" width="20px" height="20px"></SvgIcon>
+        </el-icon>
+      </el-tooltip>
       <el-dropdown class="dropdown" @command="handleCommand">
         <span class="el-dropdown-link flex items-center text-sl">
           <el-avatar :size="30" :src="store.userInfo.avatar" class="mr-2" />
@@ -76,6 +81,11 @@ const { form, rules, handleLogout } = useRepassword()
 const router = useRouter()
 const store = useUserInfoStore()
 import { isDark, toggleDark } from '@/composables'
+import { useCookies } from '@vueuse/integrations/useCookies'
+
+const cookie = useCookies()
+const lang = cookie.get('lang')
+
 // isFullscreen:是否全屏状态 toggle：转态切换
 const { isFullscreen, toggle } = useFullscreen()
 let title = ref('修改密码')
@@ -109,6 +119,14 @@ const handleRefresh = () => {
 // 切换全屏
 const handleToggle = () => {
   toggle()
+}
+const handleLanguage = () => {
+  if (lang === 'zh') {
+    cookie.set('lang', 'en')
+  } else {
+    cookie.set('lang', 'zh')
+  }
+  location.reload()
 }
 // 切换菜单抽屉
 const handleQuery = () => {

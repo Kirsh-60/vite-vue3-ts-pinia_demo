@@ -1,105 +1,118 @@
 <template>
-  <Tabs v-if="showTabs" :tabSet="tabSet" @tabChange="tabChange" />
-  <!-- 搜索 -->
-  <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
-    <SearchItem v-for="(item, index) in searchForm1" :label="item.label" :key="index">
-      <template v-if="item.type == 'input'">
-        <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
-      </template>
-      <template v-else-if="item.type == 'select'">
-        <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
-          <el-option v-for="ele in item.options" :key="ele.id" :label="ele.label" :value="ele.id">
-          </el-option>
-        </el-select>
-      </template>
-    </SearchItem>
-    <template #show>
-      <SearchItem v-for="(item, index) in searchForm2" :label="item.label" :key="index">
-        <template v-if="item.type == 'input'">
-          <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
-        </template>
-        <template v-else-if="item.type == 'select'">
-          <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
-            <el-option v-for="ele in item.options" :key="ele.value" :label="ele.label" :value="ele.value">
-            </el-option>
-          </el-select>
-        </template>
-      </SearchItem>
-    </template>
-  </Search>
-  <div class="flex justify-between self-center h-8">
-    <!-- <div>{{ tableConfig.tableName }}</div> -->
-    <div>
-      <slot name="handleOptions" />
-    </div>
-    <div class="flex self-center">
-      <el-tooltip class="box-item" effect="dark" content="刷新表格" placement="top">
-        <el-button link @click="refreshTable()">
-          <el-icon>
-            <Refresh />
-          </el-icon>
-        </el-button>
-      </el-tooltip>
-      <i class="px-2"></i>
-      <el-tooltip class="box-item px-6  " effect="dark" content="调整间距" placement="top">
-        <el-dropdown placement="bottom-start" @command="operationTable">
-          <el-button link>
-            <el-icon>
-              <Operation />
-            </el-icon>
-          </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="zc">紧凑</el-dropdown-item>
-              <el-dropdown-item command="mr">默认</el-dropdown-item>
-              <el-dropdown-item command="ks">宽松</el-dropdown-item>
-            </el-dropdown-menu>
+  <div>
+    <el-config-provider :locale="locale">
+      <Tabs v-if="showTabs" :tabSet="tabSet" @tabChange="tabChange" />
+      <!-- 搜索 -->
+      <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
+        <SearchItem v-for="(item, index) in searchForm1" :label="item.label" :key="index">
+          <template v-if="item.type == 'input'">
+            <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
           </template>
-        </el-dropdown>
-      </el-tooltip>
-      <i class="px-2"></i>
-      <el-tooltip class="box-item" effect="dark" content="自定义列" placement="top">
-        <el-button link @click="diyTable()">
-          <el-icon>
-            <Setting />
-          </el-icon>
-        </el-button>
-      </el-tooltip>
-    </div>
+          <template v-else-if="item.type == 'select'">
+            <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
+              <el-option v-for="ele in item.options" :key="ele.id" :label="ele.label" :value="ele.id">
+              </el-option>
+            </el-select>
+          </template>
+        </SearchItem>
+        <template #show>
+          <SearchItem v-for="(item, index) in searchForm2" :label="item.label" :key="index">
+            <template v-if="item.type == 'input'">
+              <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
+            </template>
+            <template v-else-if="item.type == 'select'">
+              <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
+                <el-option v-for="ele in item.options" :key="ele.value" :label="ele.label" :value="ele.value">
+                </el-option>
+              </el-select>
+            </template>
+          </SearchItem>
+        </template>
+      </Search>
+      <div class="flex justify-between self-center h-8">
+        <!-- <div>{{ tableConfig.tableName }}</div> -->
+        <div>
+          <slot name="handleOptions" />
+        </div>
+        <div class="flex self-center">
+          <el-tooltip class="box-item" effect="dark" content="刷新表格" placement="top">
+            <el-button link @click="refreshTable()">
+              <el-icon>
+                <Refresh />
+              </el-icon>
+            </el-button>
+          </el-tooltip>
+          <i class="px-2"></i>
+          <el-tooltip class="box-item px-6  " effect="dark" content="调整间距" placement="top">
+            <el-dropdown placement="bottom-start" @command="operationTable">
+              <el-button link>
+                <el-icon>
+                  <Operation />
+                </el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="zc">紧凑</el-dropdown-item>
+                  <el-dropdown-item command="mr">默认</el-dropdown-item>
+                  <el-dropdown-item command="ks">宽松</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-tooltip>
+          <i class="px-2"></i>
+          <el-tooltip class="box-item" effect="dark" content="自定义列" placement="top">
+            <el-button link @click="diyTable()">
+              <el-icon>
+                <Setting />
+              </el-icon>
+            </el-button>
+          </el-tooltip>
+        </div>
+      </div>
+      <div v-if="tableConfig.showSelect" :class="isDark ? 'select-bar-dark' : 'select-bar'">
+        <el-icon style="color:#409eff" class="ml-1">
+          <WarningFilled />
+        </el-icon>
+        <text class="px-2 text-sm">已选中&nbsp;{{ selectList }}&nbsp;条记录(可跨页)</text>
+        <el-button type="primary" link @click="toggleSelection()">清空</el-button>
+      </div>
+      <el-table ref="multipleTableRef" :data="tableData" :border="tableConfig.border" :row-key="indexMethod"
+        style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"
+        @selection-change="handleSelectionChange">
+        <el-table-column v-if="tableConfig.showSelect" type="selection" :reserve-selection="true" width="55" />
+        <el-table-column v-if="showIndex" fixed type="index" :index="indexMethod" width="60" label="序号"
+          align="center" />
+        <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop"
+          :label="item.label" :width="item.width" :fixed="item.fixed" :align="item.align"
+          :show-overflow-tooltip="item.ellipsis || true">
+          <template v-if="item.custom" #default="scope">
+            <slot :name="item.prop" :scope="scope" />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination v-model:current-page="tableOptions.pageSet.currentPage"
+        v-model:page-size="tableOptions.pageSet.pageSize" :page-sizes="tableOptions.pageSet.size"
+        :size="tableConfig.tableSize" :disabled="tableConfig.disabled" :background="tableConfig.background"
+        layout="total, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
+    </el-config-provider>
   </div>
-  <div v-if="tableConfig.showSelect" :class="isDark ? 'select-bar-dark' : 'select-bar'">
-    <el-icon style="color:#409eff" class="ml-1">
-      <WarningFilled />
-    </el-icon>
-    <text class="px-2 text-sm">已选中&nbsp;{{ selectList }}&nbsp;条记录(可跨页)</text>
-    <el-button type="primary" link @click="toggleSelection()">清空</el-button>
-  </div>
-  <el-table ref="multipleTableRef" :data="tableData" :border="tableConfig.border" :row-key="indexMethod"
-    style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"
-    @selection-change="handleSelectionChange">
-    <el-table-column v-if="tableConfig.showSelect" type="selection" :reserve-selection="true" width="55" />
-    <el-table-column v-if="showIndex" fixed type="index" :index="indexMethod" width="60" label="序号" align="center" />
-    <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop" :label="item.label"
-      :width="item.width" :fixed="item.fixed" :align="item.align" :show-overflow-tooltip="item.ellipsis || true">
-      <template v-if="item.custom" #default="scope">
-        <slot :name="item.prop" :scope="scope" />
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-pagination v-model:current-page="tableOptions.pageSet.currentPage"
-    v-model:page-size="tableOptions.pageSet.pageSize" :page-sizes="tableOptions.pageSet.size"
-    :size="tableConfig.tableSize" :disabled="tableConfig.disabled" :background="tableConfig.background"
-    layout="total, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
-    @current-change="handleCurrentChange" />
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, onMounted, defineExpose } from 'vue'
+import { ref, defineProps, onMounted, defineExpose, computed } from 'vue'
 import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
 import Tabs from './Tabs.vue'
 import type { TableInstance } from 'element-plus'
 import { isDark } from '@/composables';
+import { useCookies } from '@vueuse/integrations/useCookies'
+import zhCn from '@element-plus/locale/lang/zh-cn'
+import en from 'element-plus/dist/locale/en.mjs'
+const cookie = useCookies()
+const lang = cookie.get('lang')
+const language = ref(lang)
+const locale = computed(() => (language.value !== 'zh' ? zhCn : en))
 // #region
 // 定义表格选项类型
 /**

@@ -94,3 +94,20 @@ export const tabbars = [
     name: '回收站',
   },
 ]
+
+export const formOptions = [
+  {
+    label: '姓名',
+    field: 'name',
+    component: 'LInput',
+    required: true,
+    placeholder: '请输入姓名',
+  },
+  {
+    label: '性别',
+    field: 'sex',
+    component: 'LSelect',
+    required: true,
+    placeholder: '请选择性别',
+  },
+]
