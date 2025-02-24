@@ -18,7 +18,6 @@ const pinia = createPinia()
 import 'nprogress/nprogress.css'
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
 // 引入 Element Plus 语言包
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'

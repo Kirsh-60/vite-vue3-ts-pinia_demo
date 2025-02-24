@@ -36,6 +36,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/vjifen': {
+        // 新增代理配置
+        target: 'https://vct.vjifen.com:32020',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/vjifen/, '/VjifenCOMApi'),
+      },
     },
     host: '0.0.0.0', // 主要是host这个配置 局域网访问
     port: 5174, // 设置服务启动端口号
@@ -44,5 +50,15 @@ export default defineConfig({
     hmr: {
       overlay: false, // 禁用服务器错误遮罩层
     },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: ``,
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['@wangeditor/editor'],
   },
 })
