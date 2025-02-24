@@ -5,6 +5,7 @@
 // width: 列宽
 // showOverflowTooltip: 是否超出宽度隐藏显示tooltip提示框 默认为true
 // custom: 是否自定义渲染内容，默认为false，如果要自定义渲染内容，设置为true即可
+
 // fixed: 是否固定列，可选值为left、right，默认为空（不固定）
 export const singTable = [
   {
@@ -95,19 +96,29 @@ export const tabbars = [
   },
 ]
 
-export const formOptions = [
-  {
-    label: '姓名',
-    field: 'name',
-    component: 'LInput',
-    required: true,
-    placeholder: '请输入姓名',
-  },
-  {
-    label: '性别',
-    field: 'sex',
-    component: 'LSelect',
-    required: true,
-    placeholder: '请选择性别',
-  },
-]
+export const formOptions = {
+  // isShowFormBtn: true, // 是否显示表单按钮 默认为true
+  compile: [
+    {
+      label: '姓名',
+      field: 'name',
+      component: 'LInput',
+      required: true,
+      placeholder: '请输入姓名',
+    },
+    {
+      label: '性别',
+      field: 'sex',
+      component: 'LSelect',
+      required: true,
+      placeholder: '请选择性别',
+      componentProps: {
+        options: [
+          { label: '男', value: 1 },
+          { label: '女', value: 2 },
+          { label: '未知', value: 3 },
+        ],
+      },
+    },
+  ],
+}

@@ -1,27 +1,21 @@
 <template>
-    <el-form-item :label="options.label" :prop="options.field">
-        <el-input v-model="ruleForm[options.field]" @change="inputChange()" />
+    <el-form-item :label="label" :prop="prop">
+        <el-input v-model="modelValue" :placeholder="placeholder" @change="updateValue" />
     </el-form-item>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from "vue"
+<script lang="ts" setup>
+import { defineProps, defineEmits } from 'vue'
+const modelValue = defineModel()
 const props = defineProps<{
-    options: any
+    label: string,
+    prop: string,
+    placeholder: string
 }>()
-const emit = defineEmits(['input-change'])
-const { options } = props
+const { label, prop, placeholder } = props
+const emits = defineEmits(['update:modelValue'])
 
-const ruleForm = reactive<any>({})
-console.log(options, 'optionsoptionsoptions');
-
-Object.keys(options).forEach((key: string) => {
-    ruleForm[key] = ""
-})
-function inputChange() {
-    console.log(ruleForm[options.field])
-    emit('input-change', { label: options.field, value: ruleForm[options.field] })
+const updateValue = (value: any) => {
+    emits('update:modelValue', value)
 }
 </script>
-
-<style lang="scss" scoped></style>

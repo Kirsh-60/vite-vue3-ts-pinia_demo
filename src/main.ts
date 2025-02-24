@@ -36,6 +36,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 import svgIcon from '@/components/SvgIcon/index.vue'
 app.component('SvgIcon', svgIcon)
 
+// 引入全局方法 确认弹窗
+import { confirm } from '@/utils/confirm';
+app.config.globalProperties.$confirm = confirm;
+
 // 挂载
 app.use(router)
 app.use(ElementPlus, {

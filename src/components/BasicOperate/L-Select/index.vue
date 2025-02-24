@@ -1,25 +1,24 @@
 <template>
-    <el-form-item :label="options.label" :prop="options.field">
-        <el-select v-model="ruleForm[options.field]" placeholder="Activity zone">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
+    <el-form-item :label="label" :prop="prop">
+        <el-select v-model="modelValue" :placeholder="placeholder" @change="updateValue">
+            <el-option v-for="selectItem in options" :key="selectItem.value" :label="selectItem.label" :value="selectItem.value"/>
         </el-select>
     </el-form-item>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from "vue"
+<script lang="ts" setup>
+import { defineProps, defineEmits } from 'vue'
+const modelValue = defineModel()
 const props = defineProps<{
-    options: any
+    label: string,
+    prop: string,
+    placeholder: string,
+    options: Array<{ label: string, value: any }>
 }>()
-const { options } = props
+const { label, prop, placeholder } = props
+const emits = defineEmits(['update:modelValue'])
 
-const ruleForm = reactive<any>({})
-console.log(options, 'optionsoptionsoptions');
-
-Object.keys(options).forEach((key: string) => {
-    ruleForm[key] = ""
-})
+const updateValue = (value: any) => {
+    emits('update:modelValue', value)
+}
 </script>
-
-<style lang="scss" scoped></style>

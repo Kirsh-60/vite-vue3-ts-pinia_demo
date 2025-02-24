@@ -30,6 +30,7 @@
                 <el-divider />
             </template>
             <div style="min-height: 300px;">
+                <!-- <BasicForm ref="basicFormRef" :formOptions="formOptions" /> -->
                 <slot></slot>
             </div>
             <el-divider />
@@ -45,43 +46,75 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { confirm } from '@/utils/confirm';
+import BasicForm from '@/components/BasicForm/index.vue';
+
 const props = defineProps(['dialogVisible', 'dialogProps']);
 const emit = defineEmits(['update:dialogVisible']);
 const fullscreen = ref(false);
-/**
- * 处理关闭操作
- *
- * @param done 关闭操作完成后需要调用的函数
- */
-const handleClose = (done: () => void) => {
-    ElMessageBox.confirm('确认关闭吗?')
-        .then(() => {
-            done()
-            emit('update:dialogVisible', false);
-        })
-        .catch(() => {
-            // catch error
-        })
+const basicFormRef = ref(null);
+const formOptions = {
+    // isShowFormBtn: true, // 是否显示表单按钮 默认为true
+    compile: [
+        {
+            label: '姓名',
+            field: 'name',
+            component: 'LInput',
+            required: true,
+            placeholder: '请输入姓名',
+        },
+        {
+            label: '性别',
+            field: 'sex',
+            component: 'LSelect',
+            required: true,
+            placeholder: '请选择性别',
+            componentProps: {
+                options: [
+                    { label: '男', value: 1 },
+                    { label: '女', value: 2 },
+                    { label: '未知', value: 3 },
+                ],
+            },
+        },
+    ],
 }
-/**
- * 关闭对话框的函数
- *
- * @returns {void} 无返回值
- */
-function closeDialog() {
+// 处理关闭操作
+const handleClose = async () => {
+    const isConfirmed = await confirm('确认关闭吗？', '确认');
+    if (isConfirmed) {
+        // console.log('执行关闭操作');
+        closeDialog();
+    } else {
+        // console.log('取消关闭');
+    }
+}
+
+// 关闭对话框的函数
+function closeDialog(): void {
     emit('update:dialogVisible', false);
 }
-function handleSave() {
-    ElMessageBox.confirm('确认保存吗?')
-        .then(() => {
-            emit('update:dialogVisible', false);
-        })
-        .catch(() => {
-            // catch error
-        })
+
+// 处理保存操作
+async function handleSave() {
+    callLogs();
+    // const isConfirmed = await confirm('确认保存吗？', '确认');
+    // if (isConfirmed) {
+    //     // console.log('执行删除操作');
+    //     closeDialog();
+    // } else {
+    //     // console.log('取消删除');
+    // }
+}
+
+// 调用 BasicForm 的 logs 方法
+function callLogs() {
+    if (basicFormRef.value) {
+        basicFormRef.value.submitForm();
+    }
 }
 </script>
+
 <style lang="scss" scoped>
 .my-header {
     display: flex;
