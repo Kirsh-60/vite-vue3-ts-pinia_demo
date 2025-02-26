@@ -1,9 +1,15 @@
 <template>
   <div>
     <!-- 查询&表格组件 -->
-    <search-table ref="searchTableRef" :table-data="tableData" :table-options="tableOptions">
+    <search-table
+      ref="searchTableRef"
+      :table-data="tableData"
+      :table-options="tableOptions"
+    >
       <template #handleOptions>
-        <el-button size="small" type="primary" @click="handleAdd()">新增</el-button>
+        <el-button size="small" type="primary" @click="handleAdd()"
+          >新增</el-button
+        >
         <el-button size="small" @click="handleAvidete()">表单校验</el-button>
         <el-button size="small" @click="handleAvidete()">获取数据</el-button>
         <el-button size="small" @click="handleAvidete()">设置值</el-button>
@@ -14,25 +20,32 @@
         {{ scope.row.title }}
       </template>
       <template #desc="{ scope }">
-        <el-button v-if="scope.row.title != '11'" type="primary" link @click="editOrder()">
+        <el-button
+          v-if="scope.row.title != '11'"
+          type="primary"
+          link
+          @click="editOrder()"
+        >
           编辑
         </el-button>
       </template>
     </search-table>
 
     <!-- dialog弹窗组件 -->
-    <BasicMode v-model:dialogVisible="dialogVisible" :dialog-props="dialogProps">
-      <!-- form表单组件 -->
-      <BasicForm ref="basicFormRef" :formOptions="formOptions" />
+    <BasicMode
+      v-model:dialogVisible="dialogVisible"
+      :dialog-props="dialogProps"
+      :form-options="formOptions"
+    >
     </BasicMode>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { confirm } from '@/utils/confirm'
 import SearchTable from '@/components/SearchTable/index.vue'
 import BasicMode from '@/components/BasicModel/index.vue'
-import BasicForm from '@/components/BasicForm/index.vue'
 import { singTable, searchForm, tabbars, formOptions } from './singTable'
 import {
   tableData,
@@ -42,12 +55,9 @@ import {
   handleAdd,
   editOrder,
   handleAvidete,
-  searchTableRef
+  searchTableRef,
 } from './singTable/options.ts'
 const tableOptions = tableModel(singTable, searchForm, tabbars)
 
-// 获取 BasicForm 的引用
-const basicFormRef = ref(null);
-
-onMounted(() => { })
+onMounted(() => {})
 </script>

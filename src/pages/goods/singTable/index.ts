@@ -120,5 +120,12 @@ export const formOptions = {
         ],
       },
     },
+    {
+      label: '富文本',
+      field: 'edit',
+      component: 'LEdit',
+      required: true,
+      placeholder: '',
+    },
   ],
 }

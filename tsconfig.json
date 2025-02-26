@@ -26,6 +26,6 @@
     },
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/composables/utils.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/composables/utils.ts", "src/components/BasicOperate/L-Edit/editMethods.js", "src/components/BasicOperate/L-Edit/editMethods.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

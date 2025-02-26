@@ -1,19 +1,9 @@
 import { reactive, ref } from 'vue'
 import type { ComponentSize, FormInstance, FormRules } from 'element-plus'
 const formSize = ref<ComponentSize>('default') // 默认表格大小
-export const submitForm = async () => {
-  if (ruleFormRef.value) {
-    await ruleFormRef.value.validate((valid, fields) => {
-      if (valid) {
-        console.log('submit!')
-      } else {
-        console.log('error submit!', fields)
-      }
-    })
-  }
-}
 
-export const resetForm = (formEl: FormInstance | undefined) => {
+export const resetForm = async () => {
+  const formEl = ruleFormRef.value
   if (!formEl) return
   formEl.resetFields()
 }
