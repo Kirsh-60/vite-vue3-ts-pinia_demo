@@ -97,7 +97,7 @@ export const tabbars = [
 ]
 
 export const formOptions = {
-  // isShowFormBtn: true, // 是否显示表单按钮 默认为true
+  isShowFormBtn: false, // 是否显示表单按钮 默认为true
   compile: [
     {
       label: '姓名',
@@ -117,6 +117,39 @@ export const formOptions = {
           { label: '男', value: 1 },
           { label: '女', value: 2 },
           { label: '未知', value: 3 },
+        ],
+      },
+    },
+    {
+      label: '日期',
+      field: 'date',
+      component: 'LDate',
+      dateOptions: {
+        dateType: 'daterange', // 日期类型，可选值为 date、daterange、datetime、datetimerange
+        format: 'yyyy-MM-dd', // 展示的日期格式 默认为 yyyy-MM-dd
+        valueFormat: 'yyyy-MM-dd', // 绑定值的日期格式 默认为 yyyy-MM-dd
+        rangeSeparator: '至', // 选择范围时的分隔符 默认为 ' - '
+        startPlaceholder: '开始日期', // 开始日期的占位内容 仅在daterange、datetimerange下有效
+        endPlaceholder: '结束日期', // 结束日期的占位内容 仅在daterange、datetimerange下有效
+        clearable: true, // 是否显示清空按钮 仅在非range下有效
+        editable: false, // 文本框是否可以输入 仅在非range下有效
+        arrowControl: true, // 是否使用箭头进行日期选择 仅在非range下有效
+        align: 'left', // 对齐方式，可选值为 left、center、right
+      },
+      required: true,
+      placeholder: '请选择日期',
+    },
+    {
+      label: '爱好',
+      field: 'hobby',
+      component: 'LCheckBox',
+      required: true,
+      placeholder: '请选择爱好',
+      componentProps: {
+        options: [
+          { label: '篮球', value: 1, disabled: true },
+          { label: '羽毛球', value: 2 },
+          { label: '网球', value: 3 },
         ],
       },
     },

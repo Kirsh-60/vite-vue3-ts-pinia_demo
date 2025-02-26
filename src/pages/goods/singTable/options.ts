@@ -38,21 +38,10 @@ const dialogProps = ref({
   width: '50%',
   icon: 'add',
 })
-const dialogVisible = ref(false)
-function editOrder() {}
-function handleAdd() {
-  console.log('新增')
-  dialogVisible.value = true
-}
-function handleAvidete() {}
 
 export {
   tableData,
   tableModel,
   dialogProps,
-  dialogVisible,
-  handleAdd,
-  editOrder,
-  handleAvidete,
   searchTableRef,
 }

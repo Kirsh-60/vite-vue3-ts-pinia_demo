@@ -9,6 +9,7 @@ import About from '@/pages/about.vue'
 import NotFound from '@/pages/404.vue'
 import GoodList from '@/pages/goods/list.vue'
 import CategoryList from '@/pages/category/list.vue'
+import SkusList from '@/pages/skus/list.vue'
 import UserList from '@/pages/user/list.vue'
 import OrderList from '@/pages/order/list.vue'
 import CommentList from '@/pages/comment/list.vue'
@@ -68,6 +69,14 @@ const asyncRoutes = [
     component: CategoryList,
     meta: {
       title: '分类列表',
+    },
+  },
+  {
+    path: '/skus/list',
+    name: '/skus/list',
+    component: SkusList,
+    meta: {
+      title: '规格管理',
     },
   },
   {

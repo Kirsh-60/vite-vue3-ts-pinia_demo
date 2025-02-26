@@ -27,6 +27,24 @@
         :placeholder="options.placeholder"
         :options="options.componentProps.options"
       />
+      <!-- 时间选择器 -->
+      <LDate
+        v-if="options.component == 'LDate'"
+        :label="options.label"
+        :prop="options.field"
+        :dateOptions="options.dateOptions"
+        v-model="ruleForm[options.field]"
+        :placeholder="options.placeholder"
+      />
+      <!-- 复选框选择器 -->
+      <LCheckBox
+        v-if="options.component == 'LCheckBox'"
+        :label="options.label"
+        :prop="options.field"
+        v-model="ruleForm[options.field]"
+        :placeholder="options.placeholder"
+        :options="options.componentProps.options"
+      />
       <!-- 编辑器 -->
       <LEdit
         ref="editRef"
@@ -37,19 +55,25 @@
         :placeholder="options.placeholder"
       />
     </template>
-    <el-form-item v-if="isShowFormBtn">
-      <el-button size="small" type="primary" @click="submitForm()">
-        保存
-      </el-button>
+    <el-form-item
+      v-if="isShowFormBtn"
+      align="center"
+      style="justify-content: center"
+    >
+      <el-button size="small" type="primary" @click="validateForm()"
+        >保存</el-button
+      >
     </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import LInput from '@/components/BasicOperate/L-Input/index.vue'
 import LSelect from '@/components/BasicOperate/L-Select/index.vue'
 import LEdit from '@/components/BasicOperate/L-Edit/index.vue'
+import LDate from '@/components/BasicOperate/L-Date/index.vue'
+import LCheckBox from '@/components/BasicOperate/L-CheckBox/index.vue'
 import {
   resetForm,
   ruleForm,

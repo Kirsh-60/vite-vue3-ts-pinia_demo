@@ -42,8 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue'
-import { confirm } from '@/utils/confirm'
+import { onMounted } from 'vue'
 import SearchTable from '@/components/SearchTable/index.vue'
 import BasicMode from '@/components/BasicModel/index.vue'
 import { singTable, searchForm, tabbars, formOptions } from './singTable'
@@ -51,12 +50,14 @@ import {
   tableData,
   tableModel,
   dialogProps,
+  searchTableRef,
+} from './singTable/options.ts'
+import {
   dialogVisible,
   handleAdd,
   editOrder,
   handleAvidete,
-  searchTableRef,
-} from './singTable/options.ts'
+} from './singTable/baseApi.ts'
 const tableOptions = tableModel(singTable, searchForm, tabbars)
 
 onMounted(() => {})
