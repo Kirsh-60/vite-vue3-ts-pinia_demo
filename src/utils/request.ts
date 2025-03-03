@@ -8,8 +8,10 @@ import { useUserInfoStore } from '@/store'
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+console.log('apiBaseUrl', apiBaseUrl)
 const service = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl,
 })
 // 添加请求拦截器
 service.interceptors.request.use(
