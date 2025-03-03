@@ -43,8 +43,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-import SearchTable from '@/components/SearchTable/index.vue'
-import BasicMode from '@/components/BasicModel/index.vue'
+
 import { singTable, searchForm, tabbars, formOptions } from './singTable'
 import {
   tableData,

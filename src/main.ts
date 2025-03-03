@@ -35,6 +35,15 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 import svgIcon from '@/components/SvgIcon/index.vue'
 app.component('SvgIcon', svgIcon)
 
+// 表格组件
+import SearchTable from '@/components/SearchTable/index.vue'
+// 基础模态框
+import BasicMode from '@/components/BasicModel/index.vue'
+
+// 全局注册组件
+app.component('SearchTable', SearchTable);
+app.component('BasicMode', BasicMode);
+
 // 挂载
 app.use(router)
 app.use(ElementPlus, {
