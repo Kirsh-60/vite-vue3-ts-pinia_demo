@@ -41,8 +41,11 @@ import SearchTable from '@/components/SearchTable/index.vue'
 import BasicMode from '@/components/BasicModel/index.vue'
 
 // 全局注册组件
-app.component('SearchTable', SearchTable);
-app.component('BasicMode', BasicMode);
+app.component('SearchTable', SearchTable)
+app.component('BasicMode', BasicMode)
+
+// 只在开发环境中引入 Mock.js
+import('@/mock/index.ts')
 
 // 挂载
 app.use(router)
