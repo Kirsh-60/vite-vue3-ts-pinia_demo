@@ -7,43 +7,37 @@
     label-width="auto"
     class="demo-ruleForm"
     :size="formSize"
-    status-icon
   >
     <template v-for="options in compile">
       <!-- 输入框 -->
       <LInput
         v-if="options.component == 'LInput'"
-        :label="options.label"
-        :prop="options.field"
         v-model="ruleForm[options.field]"
-        :placeholder="options.placeholder"
+        :config="options"
       />
       <!-- 选择器 -->
       <LSelect
         v-if="options.component == 'LSelect'"
-        :label="options.label"
-        :prop="options.field"
         v-model="ruleForm[options.field]"
-        :placeholder="options.placeholder"
-        :options="options.componentProps.options"
+        :config="options"
       />
       <!-- 时间选择器 -->
       <LDate
         v-if="options.component == 'LDate'"
-        :label="options.label"
-        :prop="options.field"
-        :dateOptions="options.dateOptions"
         v-model="ruleForm[options.field]"
-        :placeholder="options.placeholder"
+        :config="options"
       />
       <!-- 复选框选择器 -->
       <LCheckBox
         v-if="options.component == 'LCheckBox'"
-        :label="options.label"
-        :prop="options.field"
+        :config="options"
         v-model="ruleForm[options.field]"
-        :placeholder="options.placeholder"
-        :options="options.componentProps.options"
+      />
+      <!-- 选择器 -->
+      <LSelectArea
+        v-if="options.component == 'LSelectArea'"
+        v-model="ruleForm[options.field]"
+        :config="options"
       />
       <!-- 编辑器 -->
       <LEdit
@@ -74,6 +68,7 @@ import LSelect from '@/components/BasicOperate/L-Select/index.vue'
 import LEdit from '@/components/BasicOperate/L-Edit/index.vue'
 import LDate from '@/components/BasicOperate/L-Date/index.vue'
 import LCheckBox from '@/components/BasicOperate/L-CheckBox/index.vue'
+import LSelectArea from '@/components/BasicOperate/L-SelectArea/index.vue'
 import {
   resetForm,
   ruleForm,
@@ -109,11 +104,15 @@ const validateForm = () => {
 
 // 遍历表单配置，生成表单验证规则
 compile.forEach((option: any) => {
+  console.log(option, 'option')
+
   if (option.required) {
     rules[option.field] = [
       {
         required: true,
-        message: `请输入${option.label}`,
+        message: option.placeholder
+          ? option.placeholder
+          : `请输入${option.label}`,
         trigger: ['blur', 'change'],
       },
     ]

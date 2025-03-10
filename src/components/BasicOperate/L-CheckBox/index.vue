@@ -1,12 +1,12 @@
 <template>
-  <el-form-item :label="label" :prop="prop">
+  <el-form-item :label="label" :prop="field">
     <el-checkbox-group
       v-model="modelValue"
       :placeholder="placeholder"
       @change="updateValue"
     >
       <el-checkbox
-        v-for="(item, index) in options"
+        v-for="(item, index) in componentProps.options"
         :key="index"
         :label="item.label"
         :value="item.value"
@@ -19,13 +19,19 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from 'vue'
 const modelValue = defineModel()
-const props = defineProps<{
+interface Config {
   label: string
-  prop: string
+  field: string
   placeholder: string
-  options: Array<{ label: string; value: any; disabled?: boolean }>
+  componentProps: {
+    options: Array<{ value: any; label: string; disabled: boolean }>
+  }
+}
+const props = defineProps<{
+  config: Config
 }>()
-const { label, prop, placeholder } = props
+const { label, field, placeholder, componentProps } = props.config
+console.log('props', field)
 const emits = defineEmits(['update:modelValue'])
 
 const updateValue = (value: any) => {

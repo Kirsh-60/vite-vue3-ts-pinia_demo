@@ -1,5 +1,5 @@
 <template>
-  <Watermark text="ln低代码平台" :color="'green'" :fontSize="14" :opacity="0.8" :angle="-40">
+  <Watermark text="刘宁低代码平台" :color="'#eee'" :fontSize="14" :opacity="1" :angle="-40">
     <div class="content">
       <h1>水印示例</h1>
       <p>这是一个带有水印功能的内容区域。</p>
@@ -35,7 +35,7 @@ import Watermark from '@/components/waterMark/index.vue'
 .content {
   padding: 20px;
   p{
-    color: antiquewhite;
+    color: black;
   }
 }
 </style>

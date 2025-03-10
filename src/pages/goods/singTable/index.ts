@@ -154,6 +154,24 @@ export const formOptions = {
       },
     },
     {
+      label: '区域',
+      field: 'area',
+      component: 'LSelectArea',
+      required: true,
+      placeholder: '请选择城市',
+      componentProps: {
+        multiple: false, // 是否多选 默认为false,
+        clearable: true, // 是否显示清空按钮
+        checkStrictly: true, // 是否严格的遵守父子节点不互相关联
+        showAllLevels: false, // 是否显示全路径
+        props: {
+          value: 'id',
+          label: 'name',
+          children: 'children',
+        },
+      },
+    },
+    {
       label: '富文本',
       field: 'edit',
       component: 'LEdit',
