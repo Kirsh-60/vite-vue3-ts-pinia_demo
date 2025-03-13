@@ -17,6 +17,7 @@ import ImageList from '@/pages/image/list.vue'
 import NoticeList from '@/pages/notice/list.vue'
 import SettingBase from '@/pages/setting/base.vue'
 import CouponList from '@/pages/coupon/list.vue'
+import Manager from '@/pages/manager/list.vue'
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
@@ -135,6 +136,14 @@ const asyncRoutes = [
       title: '优惠券列表',
     },
   },
+  {
+    path: '/manager/list',
+    name: '/manager/list',
+    component: Manager,
+    meta: {
+      title: '菜单列表',
+    },
+  },
 ]
 
 // 动态路由 用于匹配动态菜单
@@ -146,11 +155,11 @@ export const router = createRouter({
 })
 
 // 动态添加路由 , 接收后端窜过来的菜单
-export function addRoutes(menus:any) {
+export function addRoutes(menus: any) {
   // 是否有新的路由
   let hasNewRoutes = false
-  const findAndAddRoutesByMenus = (arr:any) => {
-    arr.forEach((e:any) => {
+  const findAndAddRoutesByMenus = (arr: any) => {
+    arr.forEach((e: any) => {
       // e.frontpath
       let item = asyncRoutes.find((o) => o.path == e.frontpath)
       // router.hasRoute()检查路由是否存在,如果存在item，并且路由中不存在，往路由表中添加

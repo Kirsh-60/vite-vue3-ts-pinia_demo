@@ -1,19 +1,17 @@
 <template>
-  <el-form-item :label="label" :prop="field">
-    <el-checkbox-group
-      v-model="modelValue"
-      :placeholder="placeholder"
-      @change="updateValue"
-    >
-      <el-checkbox
-        v-for="(item, index) in componentProps.options"
-        :key="index"
-        :label="item.label"
-        :value="item.value"
-        :disabled="item.disabled"
-      />
-    </el-checkbox-group>
-  </el-form-item>
+  <el-checkbox-group
+    v-model="modelValue"
+    :placeholder="placeholder"
+    @change="updateValue"
+  >
+    <el-checkbox
+      v-for="(item, index) in componentProps.options"
+      :key="index"
+      :label="item.label"
+      :value="item.value"
+      :disabled="item.disabled"
+    />
+  </el-checkbox-group>
 </template>
 
 <script lang="ts" setup>
@@ -30,7 +28,7 @@ interface Config {
 const props = defineProps<{
   config: Config
 }>()
-const { label, field, placeholder, componentProps } = props.config
+const { field, placeholder, componentProps } = props.config
 console.log('props', field)
 const emits = defineEmits(['update:modelValue'])
 

@@ -19,6 +19,13 @@
       <template #title="{ scope }">
         {{ scope.row.title }}
       </template>
+      <template #type="{ scope }">
+        <el-tag type="primary" v-if="scope.row.level == 1">一级菜单</el-tag>
+        <el-tag type="info" v-if="scope.row.level == 2">二级菜单</el-tag>
+      </template>
+      <template #icon="{ scope }">
+        <component :is="scope.row.icon" class="icon-preview" />
+      </template>
       <template #desc="{ scope }">
         <el-button
           v-if="scope.row.title != '新品手机'"
@@ -35,7 +42,6 @@
     <basic-mode
       v-model:dialogVisible="dialogVisible"
       :dialog-props="dialogProps"
-      :form-options="formOptions"
       @onSave="handleSave"
     >
       <!-- 自定义表单项 -->
@@ -53,7 +59,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 
-import { singTable, searchForm, tabbars, formOptions } from './singTable'
+import { singTable, searchForm } from './singTable'
 import {
   tableData,
   tableModel,
@@ -66,9 +72,18 @@ import {
   editOrder,
   handleAvidete,
 } from './singTable/baseApi.ts'
-const tableOptions = tableModel(singTable, searchForm, tabbars)
+const tableOptions = tableModel(singTable, searchForm, [])
 const handleSave = () => {
   // 获取提供的 ruleForm
 }
 onMounted(() => {})
 </script>
+<style lang="scss" scoped>
+/* 图标大小 14px */
+.icon-preview {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+}
+</style>

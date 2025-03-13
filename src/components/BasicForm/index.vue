@@ -1,73 +1,85 @@
 <template>
   <el-form
     ref="ruleFormRef"
-    style="max-width: 100%"
+    style="min-height: 300px; max-height: 65vh; overflow-y: auto"
     :model="ruleForm"
     :rules="rules"
     label-width="auto"
     class="demo-ruleForm"
     :size="formSize"
   >
-    <template v-for="options in compile">
-      <!-- 输入框 -->
-      <LInput
-        v-if="options.component == 'LInput'"
-        v-model="ruleForm[options.field]"
-        :config="options"
-      />
-      <!-- 选择器 -->
-      <LSelect
-        v-if="options.component == 'LSelect'"
-        v-model="ruleForm[options.field]"
-        :config="options"
-      />
-      <!-- 时间选择器 -->
-      <LDate
-        v-if="options.component == 'LDate'"
-        v-model="ruleForm[options.field]"
-        :config="options"
-      />
-      <!-- 复选框选择器 -->
-      <LCheckBox
-        v-if="options.component == 'LCheckBox'"
-        :config="options"
-        v-model="ruleForm[options.field]"
-      />
-      <!-- 选择器 -->
-      <LSelectArea
-        v-if="options.component == 'LSelectArea'"
-        v-model="ruleForm[options.field]"
-        :config="options"
-      />
-      <!-- 编辑器 -->
-      <LEdit
-        ref="editRef"
-        v-if="options.component == 'LEdit'"
+    <template v-for="options in compile" :key="options.field">
+      <el-form-item
+        v-if="options.slot"
         :label="options.label"
         :prop="options.field"
-        v-model="ruleForm[options.field]"
-        :placeholder="options.placeholder"
-      />
+      >
+        <slot
+          :name="options.slot"
+          :scope="{ options: options, value: ruleForm }"
+        />
+      </el-form-item>
+      <el-form-item v-else :label="options.label" :prop="options.field">
+        <!-- 默认组件渲染 -->
+        <LInput
+          v-if="options.component === 'LInput'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+        <LSelect
+          v-if="options.component === 'LSelect'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+        <LDate
+          v-if="options.component === 'LDate'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+        <LCheckBox
+          v-if="options.component === 'LCheckBox'"
+          :config="options"
+          v-model="ruleForm[options.field]"
+        />
+        <LSelectArea
+          v-if="options.component === 'LSelectArea'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+        <LUploadImg
+          v-if="options.component === 'LUploadImg'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+        <LEdit
+          ref="editRef"
+          v-if="options.component === 'LEdit'"
+          v-model="ruleForm[options.field]"
+          :config="options"
+        />
+      </el-form-item>
     </template>
+
+    <!-- 表单按钮 -->
     <el-form-item
       v-if="isShowFormBtn"
       align="center"
       style="justify-content: center"
     >
-      <el-button size="small" type="primary" @click="validateForm()"
-        >保存</el-button
-      >
+      <el-button size="small" type="primary" @click="validateForm()">
+        保存
+      </el-button>
     </el-form-item>
   </el-form>
 </template>
-
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch, provide } from 'vue'
 import LInput from '@/components/BasicOperate/L-Input/index.vue'
 import LSelect from '@/components/BasicOperate/L-Select/index.vue'
 import LEdit from '@/components/BasicOperate/L-Edit/index.vue'
 import LDate from '@/components/BasicOperate/L-Date/index.vue'
 import LCheckBox from '@/components/BasicOperate/L-CheckBox/index.vue'
+import LUploadImg from '@/components/BasicOperate/L-UploadImg/index.vue'
 import LSelectArea from '@/components/BasicOperate/L-SelectArea/index.vue'
 import {
   resetForm,
@@ -78,7 +90,6 @@ import {
 } from './formMethods'
 
 const editRef = ref(null) // 富文本编辑器实例
-
 const props = defineProps<{
   formOptions: any
 }>()
@@ -122,5 +133,6 @@ compile.forEach((option: any) => {
 defineExpose({
   resetForm,
   validateForm,
+  ruleForm,
 })
 </script>

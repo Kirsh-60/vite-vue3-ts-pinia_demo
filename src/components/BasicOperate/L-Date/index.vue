@@ -1,17 +1,15 @@
 <template>
-  <el-form-item :label="label" :prop="field" style="width: 22rem">
-    <el-date-picker
-      v-model="modelValue"
-      :type="dateOptions.dateType"
-      :placeholder="placeholder"
-      :value-format="dateOptions.valueFormat"
-      :range-separator="dateOptions.rangeSeparator"
-      :start-placeholder="dateOptions.startPlaceholder"
-      :end-placeholder="dateOptions.endPlaceholder"
-      :picker-options="dateOptions.pickerOptions"
-      @change="updateValue"
-    />
-  </el-form-item>
+  <el-date-picker
+    v-model="modelValue"
+    :type="dateOptions.dateType"
+    :placeholder="placeholder"
+    :value-format="dateOptions.valueFormat"
+    :range-separator="dateOptions.rangeSeparator"
+    :start-placeholder="dateOptions.startPlaceholder"
+    :end-placeholder="dateOptions.endPlaceholder"
+    :picker-options="dateOptions.pickerOptions"
+    @change="updateValue"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -55,7 +53,7 @@ interface Config {
   }
 }
 const props = defineProps<{ config: Config }>()
-const { label, field, placeholder, dateOptions } = props.config
+const { placeholder, dateOptions } = props.config
 const emits = defineEmits(['update:modelValue'])
 
 const updateValue = (value: any) => {

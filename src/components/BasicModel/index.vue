@@ -57,7 +57,17 @@
           v-if="formOptions"
           ref="basicFormRef"
           :formOptions="formOptions"
-        />
+        >
+          <!-- 转发插槽 -->
+          <template
+            v-for="(_, name) in $slots"
+            v-slot:[name]="slotProps"
+            #default="scope"
+          >
+            <slot :name="name" v-bind="slotProps" />
+          </template>
+        </BasicForm>
+
         <slot v-else default=""></slot>
       </div>
       <el-divider />
@@ -74,58 +84,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { confirm } from '@/utils/confirm'
-import { showMessage } from '@/utils/message'
+import { useDialog } from './useDialog'
+import { defineProps, defineEmits } from 'vue'
 import BasicForm from '@/components/BasicForm/index.vue'
+
 const props = defineProps(['dialogVisible', 'dialogProps', 'formOptions'])
 const emit = defineEmits(['update:dialogVisible', 'onSave'])
-const fullscreen = ref(false)
-const saveLoading = ref(false)
-// 获取 BasicForm 的引用
-const basicFormRef = ref(null)
-// 处理关闭操作
-const handleClose = async () => {
-  const isConfirmed = await confirm('确认关闭吗？', '确认')
-  if (isConfirmed) {
-    // console.log('执行关闭操作');
-    closeDialog()
-  } else {
-    // console.log('取消关闭');
-  }
-}
 
-// 关闭对话框的函数
-function closeDialog(): void {
-  basicFormRef.value?.resetForm()
-  emit('update:dialogVisible', false)
-}
-
-// 处理保存操作
-async function handleSave() {
-  if (!props.formOptions) {
-    // 没有表单的情况下直接关闭弹窗
-    closeDialog() // 关闭弹窗
-  } else {
-    basicFormRef.value
-      ?.validateForm()
-      .then(async () => {
-        const isConfirmed = await confirm('确认保存吗？', '确认')
-        if (isConfirmed) {
-          saveLoading.value = true
-          setTimeout(() => {
-            closeDialog() // 关闭弹窗
-            showMessage('success', '保存成功')
-            saveLoading.value = false
-          }, 2000)
-        } else {
-        }
-      })
-      .catch(() => {
-        saveLoading.value = false
-      })
-  }
-}
+const {
+  fullscreen,
+  saveLoading,
+  basicFormRef,
+  handleClose,
+  closeDialog,
+  handleSave,
+} = useDialog(props, emit)
 </script>
 
 <style lang="scss" scoped>

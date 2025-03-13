@@ -1,18 +1,16 @@
 <template>
-  <el-form-item :label="label" :prop="field">
-    <el-select
-      v-model="modelValue"
-      :placeholder="placeholder"
-      @change="updateValue"
-    >
-      <el-option
-        v-for="selectItem in componentProps.options"
-        :key="selectItem.value"
-        :label="selectItem.label"
-        :value="selectItem.value"
-      />
-    </el-select>
-  </el-form-item>
+  <el-select
+    v-model="modelValue"
+    :placeholder="placeholder"
+    @change="updateValue"
+  >
+    <el-option
+      v-for="selectItem in componentProps.options"
+      :key="selectItem.value"
+      :label="selectItem.label"
+      :value="selectItem.value"
+    />
+  </el-select>
 </template>
 
 <script lang="ts" setup>
@@ -30,7 +28,7 @@ interface Config {
 const props = defineProps<{
   config: Config
 }>()
-const { label, field, placeholder, componentProps } = props.config
+const { placeholder, componentProps } = props.config
 const emits = defineEmits(['update:modelValue'])
 
 const updateValue = (value: any) => {

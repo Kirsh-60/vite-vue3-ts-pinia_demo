@@ -1,11 +1,9 @@
 <template>
-  <el-form-item :label="label" :prop="field">
-    <el-input
-      v-model="modelValue"
-      :placeholder="placeholder"
-      @change="updateValue"
-    />
-  </el-form-item>
+  <el-input
+    v-model="modelValue"
+    :placeholder="placeholder"
+    @change="updateValue"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -20,7 +18,7 @@ interface Config {
 const props = defineProps<{
   config: Config
 }>()
-const { label, field, placeholder } = props.config
+const { placeholder } = props.config
 const emits = defineEmits(['update:modelValue'])
 
 const updateValue = (value: any) => {

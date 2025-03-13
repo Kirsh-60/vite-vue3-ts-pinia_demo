@@ -4,25 +4,59 @@
       <Tabs v-if="showTabs" :tabSet="tabSet" @tabChange="tabChange" />
       <!-- 搜索 -->
       <Search :model="searchForm" @search="getData" @reset="resetSearchForm">
-        <SearchItem v-for="(item, index) in searchForm1" :label="item.label" :key="index">
+        <SearchItem
+          v-for="(item, index) in searchForm1"
+          :label="item.label"
+          :key="index"
+        >
           <template v-if="item.type == 'input'">
-            <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
+            <el-input
+              v-model="searchForm[item.model]"
+              :placeholder="item.placeholder"
+              clearable
+            ></el-input>
           </template>
           <template v-else-if="item.type == 'select'">
-            <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
-              <el-option v-for="ele in item.options" :key="ele.id" :label="ele.label" :value="ele.id">
+            <el-select
+              v-model="searchForm[item.model]"
+              :placeholder="item.placeholder"
+              clearable
+            >
+              <el-option
+                v-for="ele in item.options"
+                :key="ele.id"
+                :label="ele.label"
+                :value="ele.id"
+              >
               </el-option>
             </el-select>
           </template>
         </SearchItem>
         <template #show>
-          <SearchItem v-for="(item, index) in searchForm2" :label="item.label" :key="index">
+          <SearchItem
+            v-for="(item, index) in searchForm2"
+            :label="item.label"
+            :key="index"
+          >
             <template v-if="item.type == 'input'">
-              <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
+              <el-input
+                v-model="searchForm[item.model]"
+                :placeholder="item.placeholder"
+                clearable
+              ></el-input>
             </template>
             <template v-else-if="item.type == 'select'">
-              <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
-                <el-option v-for="ele in item.options" :key="ele.value" :label="ele.label" :value="ele.value">
+              <el-select
+                v-model="searchForm[item.model]"
+                :placeholder="item.placeholder"
+                clearable
+              >
+                <el-option
+                  v-for="ele in item.options"
+                  :key="ele.value"
+                  :label="ele.label"
+                  :value="ele.value"
+                >
                 </el-option>
               </el-select>
             </template>
@@ -35,7 +69,12 @@
           <slot name="handleOptions" />
         </div>
         <div class="flex self-center">
-          <el-tooltip class="box-item" effect="dark" content="刷新表格" placement="top">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="刷新表格"
+            placement="top"
+          >
             <el-button link @click="refreshTable()">
               <el-icon>
                 <Refresh />
@@ -43,7 +82,12 @@
             </el-button>
           </el-tooltip>
           <i class="px-2"></i>
-          <el-tooltip class="box-item px-6  " effect="dark" content="调整间距" placement="top">
+          <el-tooltip
+            class="box-item px-6"
+            effect="dark"
+            content="调整间距"
+            placement="top"
+          >
             <el-dropdown placement="bottom-start" @command="operationTable">
               <el-button link>
                 <el-icon>
@@ -60,7 +104,12 @@
             </el-dropdown>
           </el-tooltip>
           <i class="px-2"></i>
-          <el-tooltip class="box-item" effect="dark" content="自定义列" placement="top">
+          <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="自定义列"
+            placement="top"
+          >
             <el-button link @click="diyTable()">
               <el-icon>
                 <Setting />
@@ -69,32 +118,79 @@
           </el-tooltip>
         </div>
       </div>
-      <div v-if="tableConfig.showSelect" :class="isDark ? 'select-bar-dark' : 'select-bar'">
-        <el-icon style="color:#409eff" class="ml-1">
+      <div
+        v-if="tableConfig.showSelect"
+        :class="isDark ? 'select-bar-dark' : 'select-bar'"
+      >
+        <el-icon style="color: #409eff" class="ml-1">
           <WarningFilled />
         </el-icon>
-        <text class="px-2 text-sm">已选中&nbsp;{{ selectList }}&nbsp;条记录(可跨页)</text>
-        <el-button type="primary" link @click="toggleSelection()">清空</el-button>
+        <text class="px-2 text-sm"
+          >已选中&nbsp;{{ selectList }}&nbsp;条记录(可跨页)</text
+        >
+        <el-button type="primary" link @click="toggleSelection()"
+          >清空</el-button
+        >
       </div>
-      <el-table ref="multipleTableRef" :data="tableData" :border="tableConfig.border" :row-key="indexMethod"
-        style="width: 100%" v-loading="tLoading" :size="tableConfig.tableSize" :stripe="tableConfig.stripe"
-        @selection-change="handleSelectionChange">
-        <el-table-column v-if="tableConfig.showSelect" type="selection" :reserve-selection="true" width="55" />
-        <el-table-column v-if="showIndex" fixed type="index" :index="indexMethod" width="60" label="序号"
-          align="center" />
-        <el-table-column v-for="(item, index) in tableConfig.singTable" :key="index" :prop="item.prop"
-          :label="item.label" :width="item.width" :fixed="item.fixed" :align="item.align"
-          :show-overflow-tooltip="item.ellipsis || true">
+      <el-table
+        ref="multipleTableRef"
+        :data="tableData"
+        :border="tableConfig.border"
+        v-loading="tLoading"
+        row-key="id"
+        style="width: 100%"
+        :size="tableConfig.tableSize"
+        :stripe="tableConfig.stripe"
+        @selection-change="handleSelectionChange"
+        :tree-props="treeProps"
+        default-expand-all
+      >
+        <el-table-column
+          v-if="tableConfig.showSelect"
+          type="selection"
+          :reserve-selection="true"
+          width="55"
+        />
+        <el-table-column
+          v-if="showIndex"
+          fixed
+          type="index"
+          :index="indexMethod"
+          width="60"
+          label="序号"
+          align="center"
+        />
+        <el-table-column
+          v-for="(item, index) in tableConfig.singTable"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          :width="item.width + '%'"
+          :fixed="item.fixed"
+          :align="item.align"
+          :show-overflow-tooltip="item.ellipsis || true"
+        >
           <template v-if="item.custom" #default="scope">
             <slot :name="item.prop" :scope="scope" />
           </template>
         </el-table-column>
+        <template #empty>
+          <el-empty description="暂时查不到记录" />
+        </template>
       </el-table>
-      <el-pagination v-model:current-page="tableOptions.pageSet.currentPage"
-        v-model:page-size="tableOptions.pageSet.pageSize" :page-sizes="tableOptions.pageSet.size"
-        :size="tableConfig.tableSize" :disabled="tableConfig.disabled" :background="tableConfig.background"
-        layout="total, prev, pager, next, jumper" :total="totalCount" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
+      <el-pagination
+        v-if="tableOptions.pageSet"
+        v-model:current-page="tableOptions.pageSet.currentPage"
+        v-model:page-size="tableOptions.pageSet.pageSize"
+        :page-sizes="tableOptions.pageSet.size"
+        :size="tableConfig.tableSize"
+        :disabled="tableConfig.disabled"
+        :background="tableConfig.background"
+        layout="total, prev, pager, next, jumper"
+        :total="totalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </el-config-provider>
   </div>
 </template>
@@ -105,10 +201,11 @@ import Search from './Search.vue'
 import SearchItem from './SearchItem.vue'
 import Tabs from './Tabs.vue'
 import type { TableInstance } from 'element-plus'
-import { isDark } from '@/composables';
+import { isDark } from '@/composables'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import zhCn from '@element-plus/locale/lang/zh-cn'
 import en from 'element-plus/dist/locale/en.mjs'
+import { ta } from 'element-plus/es/locale'
 const cookie = useCookies()
 const lang = cookie.get('lang')
 const language = ref(lang)
@@ -172,7 +269,6 @@ const multipleTableRef = ref<TableInstance>()
 const multipleSelection = ref<any[]>([]) // 选中项列表
 const selectList = ref(0) // 选中项列数
 
-
 const showIndex = ref(tableConfig.value.showIndex || false) // 是否显示序号
 
 const tSearchForm = ref(tableConfig.value.searchForm) // 搜索表单
@@ -188,7 +284,8 @@ const tabData = ref<{ tab?: string }>({}) // 选项卡数据
 const showTabs = ref(false)
 if (tabSet.value) {
   showTabs.value = true // 是否展示选项卡
-  tabData.value = { // 选项卡数据
+  tabData.value = {
+    // 选项卡数据
     tab: tabSet.value.defaultSelect,
   }
 } else {
@@ -207,14 +304,14 @@ const searchForm = ref(
     {}
   )
 )
-const indexMethod = (index: number) => { // 序号
-  return index + 1 + (currentPage.value - 1) * pageSize.value;
+const indexMethod = (index: number) => {
+  // 序号
+  return index + 1 + (currentPage.value - 1) * pageSize.value
 }
 //#endregion
 
-
-
-async function getData() { // 获取数据
+async function getData() {
+  // 获取数据
   tLoading.value = true
   searchData.value = { ...tabData.value, ...searchForm.value }
   // 获取数据
@@ -225,36 +322,56 @@ async function getData() { // 获取数据
         tLoading.value = false
       }, 200)
     })) as any
-  tableData.value = result?.list || []
+  tableData.value = result?.list || result?.menus || []
+  tableData.value = addLevel(tableData.value)
   totalCount.value = result?.totalCount || 0
 }
-
-const resetSearchForm = () => { // 重置搜索表单
+// 递归设置 level
+const addLevel = (data: any, level = 1) => {
+  return data.map((item: any) => {
+    const newItem = { ...item, level }
+    if (item.child && item.child.length) {
+      newItem.child = addLevel(item.child, level + 1)
+    }
+    return newItem
+  })
+}
+// 自定义树结构字段
+const treeProps = ref({
+  children: 'child', // 默认是 "children"，这里改为 "subList"
+  label: 'label',
+})
+const resetSearchForm = () => {
+  // 重置搜索表单
   for (const key in searchForm.value) {
     searchForm.value[key] = ''
   }
   getData()
 }
 
-const handleSizeChange = (val: number) => { // 每页显示条数变化
+const handleSizeChange = (val: number) => {
+  // 每页显示条数变化
   pageSize.value = val
   getData()
 }
 
-const handleCurrentChange = (val: number) => {// 当前页变化
+const handleCurrentChange = (val: number) => {
+  // 当前页变化
   currentPage.value = val
   getData()
 }
 
-const refreshTable = () => { // 刷新表格
+const refreshTable = () => {
+  // 刷新表格
   getData()
 }
 
-const diyTable = () => { // 自定义表格
-
+const diyTable = () => {
+  // 自定义表格
 }
 
-const operationTable = (c: any) => { // 操作表格调整表格size
+const operationTable = (c: any) => {
+  // 操作表格调整表格size
   switch (c) {
     case 'zc':
       tableConfig.value.tableSize = 'small'
@@ -270,14 +387,14 @@ const operationTable = (c: any) => { // 操作表格调整表格size
   }
 }
 
-
-const tabChange = (val: string) => { // 选项卡变化
+const tabChange = (val: string) => {
+  // 选项卡变化
   tabData.value.tab = val
   getData()
 }
 
-
-const handleSelectionChange = (val: any) => {// 这里可以根据需要处理选中项的变化
+const handleSelectionChange = (val: any) => {
+  // 这里可以根据需要处理选中项的变化
   selectList.value = val.length
   multipleSelection.value = val
 }
@@ -295,14 +412,13 @@ const toggleSelection = (rows?: any[], ignoreSelectable?: boolean) => {
   }
 }
 
-
 defineExpose({
   getData,
+  refreshTable,
 })
 onMounted(() => {
   getData()
 })
-
 </script>
 
 <style scoped>
@@ -332,6 +448,4 @@ onMounted(() => {
 }
 </style>
 
-export default {
-name: 'SearchTable'
-}
+export default { name: 'SearchTable' }

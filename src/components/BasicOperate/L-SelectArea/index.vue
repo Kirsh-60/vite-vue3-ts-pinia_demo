@@ -1,15 +1,13 @@
 <template>
-  <el-form-item :label="label" :prop="field">
-    <el-cascader
-      :props="propcCascader"
-      v-model="modelValue"
-      :placeholder="placeholder"
-      :options="areaList"
-      :clearable="componentProps.clearable"
-      @change="updateValue"
-      style="width: 50%"
-    />
-  </el-form-item>
+  <el-cascader
+    :props="propcCascader"
+    v-model="modelValue"
+    :placeholder="placeholder"
+    :options="areaList"
+    :clearable="componentProps.clearable"
+    @change="updateValue"
+    style="width: 50%"
+  />
 </template>
 
 <script lang="ts" setup>
