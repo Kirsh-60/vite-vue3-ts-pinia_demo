@@ -6,6 +6,7 @@ export const resetForm = async () => {
   const formEl = ruleFormRef.value
   if (!formEl) return
   formEl.resetFields()
+  Object.keys(ruleForm).forEach(key => delete ruleForm[key]) // 重置表单数据
 }
 
 const ruleForm = reactive<any>({}) // 声明表单对象

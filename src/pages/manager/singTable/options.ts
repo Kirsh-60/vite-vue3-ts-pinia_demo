@@ -1,5 +1,7 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { getInfo } from '@/api/login'
+import { title, icon } from './baseApi.ts' // 引入 title
+
 const searchTableRef = ref(null)
 const tableData = ref([])
 const tableModel = (singTable: any[], searchForm: any[], tabbars: any[]) => {
@@ -22,9 +24,9 @@ const tableModel = (singTable: any[], searchForm: any[], tabbars: any[]) => {
   return tableOptions
 }
 const dialogProps = ref({
-  title: '编辑菜单',
+  title: computed(() => title.value), // 动态绑定 title
   width: '50%',
-  icon: 'add',
+  icon: computed(() => icon.value),
 })
 
 export { tableData, tableModel, dialogProps, searchTableRef }

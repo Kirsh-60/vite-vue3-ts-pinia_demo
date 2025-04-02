@@ -67,10 +67,10 @@ export const formOptions = {
   compile: [
     {
       label: '菜单类型',
-      field: 'sex',
+      field: 'level',
       component: 'LSelect',
       required: true,
-      placeholder: '请选择性别',
+      placeholder: '请选择菜单类型',
       componentProps: {
         options: [
           { label: '一级菜单', value: 1 },
@@ -81,7 +81,7 @@ export const formOptions = {
     },
     {
       label: '菜单名称',
-      field: 'menuName',
+      field: 'name',
       component: 'LInput',
       required: true,
       placeholder: '请输入菜单名称',
@@ -89,7 +89,7 @@ export const formOptions = {
     },
     {
       label: '访问路径',
-      field: 'path',
+      field: 'desc',
       component: 'LInput',
       required: true,
       placeholder: '请输入访问路径',
@@ -103,14 +103,14 @@ export const formOptions = {
     },
     {
       label: '组件名称',
-      field: 'componentName',
+      field: 'condition',
       component: 'LInput',
       required: false,
       placeholder: '请输入组件名称',
     },
     {
       label: '默认跳转地址',
-      field: 'redirect',
+      field: 'frontpath',
       component: 'LInput',
       required: false,
       placeholder: '请输入默认跳转地址',
@@ -118,28 +118,34 @@ export const formOptions = {
     {
       label: '菜单图标',
       field: 'icon',
-      component: 'LInput',
+      component: 'LIcons',
       required: false,
       placeholder: '请选择菜单图标',
-      slot: 'icon',
     },
     {
       label: '排序',
-      field: 'sort',
+      field: 'order',
       component: 'LInput',
       required: false,
     },
     {
       label: '是否路由菜单',
-      field: 'isRoute',
+      field: 'menu',
       component: 'LInput',
       required: false,
     },
     {
       label: '隐藏路由',
-      field: 'isHidden',
-      component: 'LInput',
+      field: 'menu',
+      component: 'LRadio',
       required: false,
+      componentProps: {
+        options: [
+          { label: '是', value: 1 },
+          { label: '否', value: 2 },
+        ],
+        defaultValue: 2,
+      },
     },
     {
       label: '隐藏Tab',

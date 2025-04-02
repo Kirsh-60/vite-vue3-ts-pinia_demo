@@ -20,7 +20,7 @@
               width="20px"
               height="20px"
             ></SvgIcon>
-            <text style="font-size: 16px">{{ props.dialogProps.title }}</text>
+            <text class="ml-2" style="font-size: 16px">{{ props.dialogProps.title }}</text>
           </h4>
           <div class="dialog-btn">
             <el-tooltip
