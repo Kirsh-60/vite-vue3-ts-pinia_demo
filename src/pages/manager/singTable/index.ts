@@ -45,12 +45,6 @@ export const singTable = [
     align: 'center',
   },
   {
-    label: '更改时间',
-    prop: 'update_time',
-    align: 'center',
-    width: 200,
-  },
-  {
     label: '操作',
     prop: 'desc',
     width: 200,
@@ -67,3 +61,91 @@ export const searchForm = [
     type: 'input',
   },
 ]
+
+export const formOptions = {
+  isShowFormBtn: false, // 是否显示表单按钮 默认为true
+  compile: [
+    {
+      label: '菜单类型',
+      field: 'sex',
+      component: 'LSelect',
+      required: true,
+      placeholder: '请选择性别',
+      componentProps: {
+        options: [
+          { label: '一级菜单', value: 1 },
+          { label: '子菜单', value: 2 },
+          { label: '按钮/权限', value: 3 },
+        ],
+      },
+    },
+    {
+      label: '菜单名称',
+      field: 'menuName',
+      component: 'LInput',
+      required: true,
+      placeholder: '请输入菜单名称',
+      // slot: 'customForm', // 是否自定义渲染内容，默认为false，如果要自定义渲染内容，设置为true即可
+    },
+    {
+      label: '访问路径',
+      field: 'path',
+      component: 'LInput',
+      required: true,
+      placeholder: '请输入访问路径',
+    },
+    {
+      label: '前端组件',
+      field: 'component',
+      component: 'LInput',
+      required: true,
+      placeholder: '请输入前端组件',
+    },
+    {
+      label: '组件名称',
+      field: 'componentName',
+      component: 'LInput',
+      required: false,
+      placeholder: '请输入组件名称',
+    },
+    {
+      label: '默认跳转地址',
+      field: 'redirect',
+      component: 'LInput',
+      required: false,
+      placeholder: '请输入默认跳转地址',
+    },
+    {
+      label: '菜单图标',
+      field: 'icon',
+      component: 'LInput',
+      required: false,
+      placeholder: '请选择菜单图标',
+      slot: 'icon',
+    },
+    {
+      label: '排序',
+      field: 'sort',
+      component: 'LInput',
+      required: false,
+    },
+    {
+      label: '是否路由菜单',
+      field: 'isRoute',
+      component: 'LInput',
+      required: false,
+    },
+    {
+      label: '隐藏路由',
+      field: 'isHidden',
+      component: 'LInput',
+      required: false,
+    },
+    {
+      label: '隐藏Tab',
+      field: 'isHideTab',
+      component: 'LInput',
+      required: false,
+    },
+  ],
+}

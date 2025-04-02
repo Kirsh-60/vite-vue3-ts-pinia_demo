@@ -14,7 +14,7 @@ const tableModel = (singTable: any[], searchForm: any[], tabbars: any[]) => {
       showOperate: true, // 是否显示操作列
       disabled: false, // 是否禁用
       showIndex: false, // 是否显示序号
-      showSelect: false, // 是否显示选择框
+      showSelect: true, // 是否显示选择框
       stripe: true, // 是否斑马线
       api: getInfo, // 请求接口
     },
@@ -22,7 +22,7 @@ const tableModel = (singTable: any[], searchForm: any[], tabbars: any[]) => {
   return tableOptions
 }
 const dialogProps = ref({
-  title: '新增',
+  title: '编辑菜单',
   width: '50%',
   icon: 'add',
 })

@@ -27,14 +27,29 @@
         <component :is="scope.row.icon" class="icon-preview" />
       </template>
       <template #desc="{ scope }">
-        <el-button
-          v-if="scope.row.title != '新品手机'"
-          type="primary"
-          link
-          @click="editOrder()"
-        >
-          编辑
-        </el-button>
+        <el-button type="primary" link @click="editOrder()"> 编辑 </el-button>
+        <i style="width: 10px; display: inline-block"></i>
+        <el-dropdown @command="handleCommand">
+          <span
+            class="el-dropdown-link"
+            style="line-height: 24px; color: #409eff"
+          >
+            更多
+            <el-icon class="">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="addSon">添加下级</el-dropdown-item>
+              <el-dropdown-item command="dataRule">数据规则</el-dropdown-item>
+              <el-dropdown-item command="defaultPage"
+                >设置默认首页</el-dropdown-item
+              >
+              <el-dropdown-item command="detele">删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </template>
     </search-table>
 
@@ -42,6 +57,7 @@
     <basic-mode
       v-model:dialogVisible="dialogVisible"
       :dialog-props="dialogProps"
+      :form-options="formOptions"
       @onSave="handleSave"
     >
       <!-- 自定义表单项 -->
@@ -58,8 +74,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-
-import { singTable, searchForm } from './singTable'
+import { singTable, searchForm, formOptions } from './singTable'
 import {
   tableData,
   tableModel,
@@ -76,6 +91,9 @@ const tableOptions = tableModel(singTable, searchForm, [])
 const handleSave = () => {
   // 获取提供的 ruleForm
 }
+const handleCommand = (command: string | number | object) => {
+  console.log(command)
+}
 onMounted(() => {})
 </script>
 <style lang="scss" scoped>
@@ -85,5 +103,13 @@ onMounted(() => {})
   width: 18px;
   height: 18px;
   margin: 0 auto;
+}
+</style>
+<style scoped>
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
 }
 </style>
