@@ -55,10 +55,10 @@ export const useUserInfoStore = defineStore('userInfo', {
       // 清除当前用户状态
       this.userInfo = {}
     },
-    // 切换菜单展示查询状态
-    toggleCollapse() {
-      this.isCollapse = !this.isCollapse
-      this.asideWidth = this.isCollapse ? '64px' : '200px'
+    // 切换菜单展示状态（传入true折叠，false展开）
+    toggleCollapse(status: boolean) {
+      this.isCollapse = status
+      this.asideWidth = status ? '64px' : '200px'
     },
   },
 })
