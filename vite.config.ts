@@ -15,6 +15,7 @@ const alias: Record<string, string> = {
   '@': pathResolve('src'),
 }
 export default defineConfig({
+  base: './', // 设置打包路径
   plugins: [
     vue(),
     WindiCSS(),
