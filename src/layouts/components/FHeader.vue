@@ -191,7 +191,11 @@ function onSubmit() {
 
 const handleResize = () => {
   // 当窗口宽度小于850，则折叠菜单；大于等于850则展开
-  const shouldCollapse = window.innerWidth < 850;
+  // 如果是移动端，折叠菜单
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+  const shouldCollapse = isMobile || window.innerWidth < 850;
   if (shouldCollapse !== store.isCollapse) {
     store.toggleCollapse(shouldCollapse);
     isCollapse.value = store.isCollapse;

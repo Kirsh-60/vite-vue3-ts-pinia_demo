@@ -2,7 +2,7 @@
     <div
         v-for="(item, index) in data.dataCount || []"
         :key="index"
-        class="flex flex-col items-center justify-center w-1/4 rounded-lg p-4 m-2"
+        class="flex flex-col items-center justify-center w-1/4 rounded-lg p-3 m-2 box-border"
       >
         <div class="text-center">
           <!-- 使用统一的 ref，Vue 会自动将多个引用收集到一个数组中 -->

@@ -4,22 +4,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import * as echarts from "echarts";
+import { ref, onMounted, onUnmounted } from 'vue'
+import * as echarts from 'echarts'
 
-const chartRef = ref<HTMLDivElement | null>(null);
-
+const chartRef = ref<HTMLDivElement | null>(null)
+const onResize = () => {
+  const chart = echarts.init(chartRef.value)
+  if (chart) {
+    chart.resize()
+  }
+}
 onMounted(() => {
   if (chartRef.value) {
-    const chart = echarts.init(chartRef.value);
+    const chart = echarts.init(chartRef.value)
     const option = {
       tooltip: {
-        trigger: "item",
+        trigger: 'item',
       },
       legend: {
         show: false,
-        top: "5%",
-        left: "center",
+        top: '5%',
+        left: 'center',
       },
       toolbox: {
         show: true,
@@ -32,21 +37,21 @@ onMounted(() => {
       },
       series: [
         {
-          name: "Access From",
-          type: "pie",
-          radius: ["40%", "70%"],
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '70%'],
           avoidLabelOverlap: false, // 是否避免标签重叠
           label: {
             // 标签样式
             show: false, // 是否显示标签
-            position: "center", // 标签位置
+            position: 'center', // 标签位置
           },
           emphasis: {
             // 鼠标悬停时的样式
             label: {
               show: true,
               fontSize: 40,
-              fontWeight: "bold",
+              fontWeight: 'bold',
             },
           },
           labelLine: {
@@ -54,16 +59,20 @@ onMounted(() => {
             show: false,
           },
           data: [
-            { value: 1048, name: "Search Engine" },
-            { value: 735, name: "Direct" },
-            { value: 580, name: "Email" },
-            { value: 484, name: "Union Ads" },
-            { value: 300, name: "Video Ads" },
+            { value: 1048, name: 'Search Engine' },
+            { value: 735, name: 'Direct' },
+            { value: 580, name: 'Email' },
+            { value: 484, name: 'Union Ads' },
+            { value: 300, name: 'Video Ads' },
           ],
         },
       ],
-    };
-    chart.setOption(option);
+    }
+    chart.setOption(option)
   }
-});
+  window.addEventListener('resize', onResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize)
+})
 </script>

@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 <style scoped>
 .main-content {
-  padding: 20px;
+  padding: 0px;
   border-radius: 6px;
   height: auto;
   overflow-x: hidden;
