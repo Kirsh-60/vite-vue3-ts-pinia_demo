@@ -1,9 +1,19 @@
+<!-- App.vue 或任意组件 -->
 <template>
-  <div class="comtainer"></div>
+  <draggable v-model="list" item-key="id" tag="ul">
+    <template #item="{ element }">
+      <li>{{ element.name }}</li>
+    </template>
+  </draggable>
 </template>
 
-<script setup lang="ts">
-// import { ref, reactive } from 'vue'
-</script>
+<script setup>
+import { ref } from 'vue'
+import draggable from 'vuedraggable'
 
-<style lang="scss" scoped></style>
+const list = ref([
+  { id: 1, name: '苹果' },
+  { id: 2, name: '香蕉' },
+  { id: 3, name: '橘子' }
+])
+</script>

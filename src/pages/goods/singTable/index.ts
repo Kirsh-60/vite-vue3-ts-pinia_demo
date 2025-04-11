@@ -11,29 +11,29 @@ export const singTable = [
   {
     label: '商品',
     prop: 'title',
-    width: 400,
+    width: 0,
     ellipsis: false,
     custom: true,
   },
   {
     label: '实际销量',
     prop: 'discount',
-    width: 400,
+    width: 0,
   },
   {
     label: '商品状态',
     prop: 'sale_count',
-    width: 400,
+    width: 0,
   },
   {
     label: '总库存',
     prop: 'stock',
-    width: 400,
+    width: 0,
   },
   {
     label: '操作',
     prop: 'desc',
-    width: 200,
+    width: 0,
     fixed: 'right',
     align: 'center',
     custom: true,
@@ -66,6 +66,11 @@ export const searchForm = [
         value: 0,
       },
     ],
+  },
+  {
+    label: '商品名称',
+    model: 'title',
+    type: 'input',
   },
 ]
 

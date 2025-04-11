@@ -15,7 +15,7 @@
             </el-select>
           </template>
         </SearchItem>
-        <template #show>
+        <template #show v-if="searchForm2.length > 0">
           <SearchItem v-for="(item, index) in searchForm2" :label="item.label" :key="index">
             <template v-if="item.type == 'input'">
               <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
@@ -68,26 +68,28 @@
                 </el-icon>
               </el-button>
               <template #dropdown>
-                <draggable v-model="tableConfig.singTable" :group="{ name: 'columns' }" @end="onDragEnd">
-                  <el-dropdown-menu>
-                    <el-dropdown-item v-for="(col, index) in tableConfig.singTable" :key="col.prop">
-                      <div style="
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        min-width: 240px;
-                        padding: 4px 0;
-                      ">
-                        <SvgIcon name="tabChange" style="font-size: 14px; flex: 0.1"></SvgIcon>
-                        <div style="font-weight: bold; flex: 0.8">
-                          {{ col.label }}
+                <draggable v-model="tableConfig.singTable" item-key="prop" tag="ul"  @end="onDragEnd">
+                  <template #item="{ element, index }">
+                    <li>
+                      <el-dropdown-item :key="element.prop">
+                        <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            min-width: 240px;
+                            padding: 4px 0;
+                          ">
+                          <SvgIcon name="tabChange" style="font-size: 14px; flex: 0.1" />
+                          <div style="font-weight: bold; flex: 0.8">
+                            {{ element.label }}
+                          </div>
+                          <el-checkbox @click.native.stop :checked="!element.hidden"
+                            :disabled="element.checkBoxDisabled" @change="(checked) => checkChanged(checked, index)"
+                            style="flex: 0.1" />
                         </div>
-                        <el-checkbox @click.native.stop :checked="!col.hidden" :disabled="col.checkBoxDisabled"
-                          @change="(checked) => checkChanged(checked, index)" style="flex: 0.1">
-                        </el-checkbox>
-                      </div>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
+                      </el-dropdown-item>
+                    </li>
+                  </template>
                 </draggable>
               </template>
             </el-dropdown>
@@ -193,7 +195,7 @@ const props = defineProps<{
 const tableConfig = ref(props.tableOptions.tableConfig) // 表格配置
 // 新增计算属性，过滤掉隐藏的列
 const computedColumns = computed(() => {
-  return tableConfig.value.singTable.filter((item:any) => !item.hidden)
+  return tableConfig.value.singTable.filter((item: any) => !item.hidden)
 })
 const tableData = ref([]) // 表格数据
 const pageSize = ref(10) // 每页显示条数
@@ -209,11 +211,12 @@ const showIndex = ref(tableConfig.value.showIndex || false) // 是否显示序�
 
 const tSearchForm = ref(tableConfig.value.searchForm) // 搜索表单
 
-// 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的第一个元素，searchForm2是searchForm的第二个元素开始
+// 将searchForm拆分为两部分一个是默认显示的，一个是点击展开显示的 
+// searchForm1是默认显示的，searchForm2是点击展开显示的，searchForm1是searchForm的前三个个元素，
+// searchForm2是searchForm的第四个元素开始
 const searchData = ref({})
-const searchForm1 = ref([tSearchForm.value[0]])
-const searchForm2 = ref(tSearchForm.value.slice(1))
-
+const searchForm1 = ref(tSearchForm.value.slice(0, 3)) // 默认显示的前三个元素
+const searchForm2 = ref(tSearchForm.value.slice(3)) // 点击展开显示的从第四个元素开始
 // 选项卡设置
 const tabSet = ref(props.tableOptions.tabSet) // 选项卡设置
 const tabData = ref<{ tab?: string }>({}) // 选项卡数据
@@ -394,6 +397,16 @@ onMounted(() => {
   margin: 8px 0;
   display: flex;
   align-items: center;
+}
+ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 </style>
 

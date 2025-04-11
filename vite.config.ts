@@ -60,6 +60,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@wangeditor/editor'],
+    include: ['@wangeditor/editor', 'vuedraggable'],
   },
 })
