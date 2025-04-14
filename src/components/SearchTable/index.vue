@@ -10,12 +10,12 @@
           </template>
           <template v-else-if="item.type == 'select'">
             <el-select v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable>
-              <el-option v-for="ele in item.options" :key="ele.id" :label="ele.label" :value="ele.id">
+              <el-option v-for="ele in item.options" :key="ele.value" :label="ele.label" :value="ele.value">
               </el-option>
             </el-select>
           </template>
         </SearchItem>
-        <template #show v-if="searchForm2.length > 0">
+        <template #show v-show="searchForm2.length > 0">
           <SearchItem v-for="(item, index) in searchForm2" :label="item.label" :key="index">
             <template v-if="item.type == 'input'">
               <el-input v-model="searchForm[item.model]" :placeholder="item.placeholder" clearable></el-input>
