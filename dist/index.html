@@ -5,10 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Vue + TS</title>
-    <script type="module" crossorigin src="./assets/index-e7e52f11.js"></script>
+    <script type="module" crossorigin src="./assets/index-5c0c5922.js"></script>
     <link rel="stylesheet" href="./assets/index-4534c1fe.css">
   </head>
+  <style>.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}</style>
   <body>
+    <!-- 这个 div 会在 Vue 加载完成前显示 -->
+    <div id="app-loading">
+      <div class="loading-spinner" style="">
+        <img src="./assets/loading2-0cb4aaa9.gif" alt="Loading..." />
+      </div>
+    </div>
     <div id="app"></div>
     
   </body>
