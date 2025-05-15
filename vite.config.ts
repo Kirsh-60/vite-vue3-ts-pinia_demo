@@ -33,7 +33,8 @@ export default defineConfig({
     // 使用代理，实现跨域
     proxy: {
       '/api': {
-        target: 'http://ceshi13.dishait.cn',
+        // target: 'http://ceshi13.dishait.cn',
+        target: 'http://81.70.28.17:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

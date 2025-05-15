@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { login, getInfo } from '@/api/login.ts'
+import { login, getInfo, createyzm } from '@/api/login.ts'
 import { setToken, removeToken } from '@/composables/auth'
 // 你可以对 `defineStore()` 的返回值进行任意命名，但最好使用 store 的名字，同时以 `use` 开头且以 `Store` 结尾。(比如 `useUserStore`，`useCartStore`，`useProductStore`)
 // 第一个参数是你的应用中 Store 的唯一 ID。
@@ -15,11 +15,28 @@ export const useUserInfoStore = defineStore('userInfo', {
     isCollapse: false,
     menuList: [] as any, // 菜单列表
     asideWidth: '200px',
+    svg: '', // 验证码
   }),
   getters: {
     // double: (state) => state.count * 2,
   },
   actions: {
+    // 生成验证码
+    async getCaptcha() {
+      return await new Promise((resolve: any, reject: any) => {
+        createyzm()
+          .then((res: any) => {
+            this.svg = res.replace(
+              /<svg /,
+              '<svg style="width: 100%; height: 100%;" '
+            )
+            resolve(this.svg)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
     // 登录
     async login(commit: RuleForm) {
       return await new Promise((resolve: any, reject: any) => {

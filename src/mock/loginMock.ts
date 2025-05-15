@@ -1,13 +1,33 @@
-// src/mock/mock.js
 import Mock from 'mockjs'
 
-// 模拟一个用户信息接口
+Mock.mock('/admin/login', 'post', (options: any) => {
+  console.log('Mock 拦截到请求:', options) // 添加调试日志
+  const body = JSON.parse(options.body)
+  const { username, password } = body
+  if (username === 'admin' && password === 'admin') {
+    return {
+      code: 200,
+      message: '登录成功',
+      data: {
+        token: 'mock-token-123',
+        user: {
+          name: '管理员',
+          id: 1,
+        },
+      },
+    }
+  } else {
+    return {
+      code: 401,
+      message: '用户名或密码错误',
+    }
+  }
+})
 Mock.mock('/admin/getinfo', 'post', () => {
-    console.log('Mock 接口 /api/getInfo2 被调用')
-  // 解析请求体
+  console.log('Mock 拦截到请求: /admin/getinfo') // 添加调试日志
   return {
     code: 200,
-    msg: 'ok',
+    message: '获取用户信息成功',
     data: {
       id: 3,
       username: 'admin',
@@ -561,29 +581,6 @@ Mock.mock('/admin/getinfo', 'post', () => {
         'setDistributionSetting,POST',
       ],
     },
-  }
-})
-
-// 模拟一个登录接口
-Mock.mock('/api/login', 'post', (options) => {
-  // 解析请求体
-  const body = JSON.parse(options.body) // 将字符串解析为对象
-  const { username, password } = body // 解构出 username 和 password
-
-  console.log('请求体:', body)
-  console.log('用户名:', username, '密码:', password)
-
-  // 模拟登录逻辑
-  if (username === 'admin' && password === 'admin') {
-    return {
-      code: 200,
-      message: '登录成功',
-      token: '480dc80457bc6a9f660f9c2d9059bc4bc25855d8',
-    }
-  } else {
-    return {
-      code: 401,
-      message: '用户名或密码错误',
-    }
+    path: '观看完整课程地址：https://study.163.com/course/courseMain.htm?courseId=1212775807&share=2&shareId=480000001892585',
   }
 })

@@ -40,9 +40,14 @@ import SearchTable from '@/components/SearchTable/index.vue'
 // 基础模态框
 import BasicMode from '@/components/BasicModel/index.vue'
 
+// 如果处于开发环境则启用mock
+// if (import.meta.env.DEV) {
+//   import('./mock/loginMock.ts')
+// }
+
 // 全局注册组件
-app.component('SearchTable', SearchTable);
-app.component('BasicMode', BasicMode);
+app.component('SearchTable', SearchTable)
+app.component('BasicMode', BasicMode)
 
 // 挂载
 app.use(router)
@@ -51,3 +56,14 @@ app.use(ElementPlus, {
 })
 app.use(pinia)
 app.mount('#app')
+
+// 加载完成后移除 loading
+const loadingEl = document.getElementById('app-loading')
+if (loadingEl) {
+  // 添加过渡隐藏动画
+  loadingEl.classList.add('hide')
+  // 等待 CSS 过渡结束再彻底移除
+  setTimeout(() => {
+    loadingEl.parentNode?.removeChild(loadingEl)
+  }, 500)
+}

@@ -6,7 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Vue + TS</title>
   </head>
+  <style>
+    .loading-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
   <body>
+    <!-- 这个 div 会在 Vue 加载完成前显示 -->
+    <div id="app-loading">
+      <div class="loading-spinner" style="">
+        <img src="/public/loading2.gif" alt="Loading..." />
+      </div>
+    </div>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
