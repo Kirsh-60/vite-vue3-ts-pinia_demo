@@ -52,7 +52,8 @@ service.interceptors.response.use(
     ) as any
   },
   async function (error) {
-    const msg = error.response.data.error || '请求失败'
+    console.log('error', error)
+    const msg = '请求失败' + error.response.data.error
 
     if (msg != 'ok') {
       toast(msg, 'error')

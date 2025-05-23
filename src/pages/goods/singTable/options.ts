@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { getGoodsList } from '@/api/goods'
+import { addGoodsApi } from '@/api/goods'
 const searchTableRef = ref(null)
 const tableData = ref([])
 const tableModel = (singTable: any[], searchForm: any[], tabbars: any[]) => {
@@ -37,11 +38,11 @@ const dialogProps = ref({
   title: '新增',
   width: '50%',
   icon: 'add',
+  api: addGoodsApi,
+  beforeSave: (ruleForm: any) => ({
+    ...ruleForm,
+    tab: searchTableRef.value?.tabData.tab, // ← 低代码地在这里调整入参
+  }),
 })
 
-export {
-  tableData,
-  tableModel,
-  dialogProps,
-  searchTableRef,
-}
+export { tableData, tableModel, dialogProps, searchTableRef }

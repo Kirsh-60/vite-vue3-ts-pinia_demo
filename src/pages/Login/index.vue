@@ -6,6 +6,13 @@
                 <div>Vjifen开发演示网站
                 </div>
             </div>
+            <div class="content">
+                <div class="star1"></div>
+                <div class="star2"></div>
+                <div class="star3"></div>
+                <div class="star4"></div>
+                <div class="star5"></div>
+            </div>
         </el-col>
         <el-col :lg="8" :md="12" class="right">
             <h2 class="title">欢迎回来</h2>
@@ -156,5 +163,64 @@ onMounted(() => {
     display: block;
     margin-left: 8px;
     cursor: pointer;
+}
+</style>
+<style lang="scss">
+@function getShadows($n) {
+    $shadows: "#{random(100)}vw #{random(100)}vh #fff";
+
+    @for $i from 2 through $n {
+        $shadows: "#{$shadows},#{random(100)}vw #{random(100)}vh #fff";
+    }
+
+    @return unquote($shadows);
+}
+
+@keyframes moveUp {
+    100% {
+        transform: translateY(-100vh);
+    }
+}
+
+$duration: 500s;
+$count: 1200;
+
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    background-size: cover;
+    padding: 0 !important;
+
+    @for $i from 1 through 5 {
+        $duration: floor(calc($duration / 2));
+        $count: floor(calc($count / 2));
+
+        .star#{$i} {
+            $size: #{$i}px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: $size;
+            height: $size;
+            border-radius: 50%;
+            box-shadow: getShadows($count);
+            animation: moveUp $duration linear infinite;
+
+            &::after {
+                position: fixed;
+                top: 100vh;
+                left: 0;
+                width: $size;
+                height: $size;
+                content: "";
+                border-radius: inherit;
+                box-shadow: inherit;
+            }
+        }
+    }
 }
 </style>

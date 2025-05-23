@@ -11,7 +11,7 @@ export function getInfo() {
 }
 
 export function logout() {
-  return axios.post('/admin/logout')
+  return axios.post('/api/users/logout')
 }
 
 export function createyzm() {

@@ -35,6 +35,8 @@ export default defineConfig({
       '/api': {
         // target: 'http://ceshi13.dishait.cn',
         target: 'http://81.70.28.17:3000',
+        // target: 'https://www.blackbuy.asia:3000',
+        // target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
@@ -43,6 +45,11 @@ export default defineConfig({
         target: 'https://vct.vjifen.com:32020',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/vjifen/, '/VjifenCOMApi'),
+      },
+      '/uploads': {
+        target: 'http://81.70.28.17:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/uploads/, '/uploads'),
       },
     },
     host: '0.0.0.0', // 主要是host这个配置 局域网访问

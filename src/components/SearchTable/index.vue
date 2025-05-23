@@ -68,7 +68,7 @@
                 </el-icon>
               </el-button>
               <template #dropdown>
-                <draggable v-model="tableConfig.singTable" item-key="prop" tag="ul"  @end="onDragEnd">
+                <draggable v-model="tableConfig.singTable" item-key="prop" tag="ul" @end="onDragEnd">
                   <template #item="{ element, index }">
                     <li>
                       <el-dropdown-item :key="element.prop">
@@ -112,6 +112,10 @@
         <el-table-column v-for="(item, index) in computedColumns" :key="index" :prop="item.prop" :label="item.label"
           :width="item.width + '%'" :fixed="item.fixed" :align="item.align"
           :show-overflow-tooltip="item.ellipsis || true">
+          <template v-if="item.type == 'img'" #default="scope">
+            <el-image v-if="scope.row[item.prop]" :src="scope.row[item.prop]"
+              style="width: auto; height: 50px" fit="scale-down" :preview-src-list="[scope.row[item.prop]]" />
+          </template>
           <template v-if="item.custom" #default="scope">
             <slot :name="item.prop" :scope="scope" />
           </template>
@@ -263,7 +267,8 @@ async function getData() {
     })) as any
   tableData.value = result?.list || result?.menus || []
   tableData.value = addLevel(tableData.value)
-  totalCount.value = result?.totalCount || 0
+  console.log('result', result)
+  totalCount.value = result?.total || 0
 }
 // 递归设置 level
 const addLevel = (data: any, level = 1) => {
@@ -367,6 +372,7 @@ const onDragEnd = async () => {
 defineExpose({
   getData,
   refreshTable,
+  tabData,
 })
 onMounted(() => {
   getData()
@@ -398,12 +404,14 @@ onMounted(() => {
   display: flex;
   align-items: center;
 }
-ul{
+
+ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-li{
+
+li {
   list-style: none;
   padding: 0;
   margin: 0;

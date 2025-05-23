@@ -1,13 +1,9 @@
 <template>
-  <el-upload
-    v-model:file-list="modelValue"
-    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-    list-type="picture-card"
-    :on-preview="handlePictureCardPreview"
-    :on-remove="handleRemove"
-    @change="updateValue"
-  >
-    <el-icon><Plus /></el-icon>
+  <el-upload :file-list="modelValue" :http-request="uploadImage" list-type="picture-card"
+    :on-preview="handlePictureCardPreview" :on-remove="handleRemove" @change="updateValue">
+    <el-icon>
+      <Plus />
+    </el-icon>
   </el-upload>
   <el-dialog v-model="dialogVisible">
     <img w-full :src="dialogImageUrl" alt="Preview Image" />
@@ -18,11 +14,10 @@
 import { ref } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import { defineProps, defineEmits } from 'vue'
+import axios from 'axios'
 
 import type { UploadProps, UploadUserFile } from 'element-plus'
-
-// const modelValue = defineModel()
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
 interface Config {
   label: string
   field: string
@@ -30,13 +25,9 @@ interface Config {
 const props = defineProps<{
   config: Config
 }>()
-const {} = props.config
+const { } = props.config
 
-// {
-//   name: 'food.jpeg',
-//   url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-// },
-const modelValue = ref<UploadUserFile[]>([])
+const modelValue = ref<UploadUserFile[]>([]) // 存储图片列表
 
 const dialogImageUrl = ref('') // 弹窗展示图片
 const dialogVisible = ref(false) // 弹窗是否展示
@@ -54,15 +45,46 @@ const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
 
 const emits = defineEmits(['update:modelValue']) // 自定义事件
 
+// 监听图片变化
 const updateValue = (value: any) => {
   // 更新图片
-  emits('update:modelValue', value)
+  // emits('update:modelValue', value)
+}
+
+// 自定义上传方法
+const uploadImage = async (options: any) => {
+  const { file, onSuccess, onError } = options
+  const formData = new FormData()
+  formData.append('image', file)
+
+  try {
+    const response = await axios.post(apiBaseUrl + '/api/public/uploadImgs', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    const imageUrl = response.data.data.imageUrl
+    onSuccess(imageUrl)
+
+    // 将返回的图片地址添加到 modelValue 中
+    modelValue.value.push({
+      url: imageUrl,
+    })
+    emits('update:modelValue', modelValue.value)
+    // 打印返回的图片地址
+    console.log('Upload successful:', imageUrl)
+  } catch (error) {
+    console.error('Upload failed:', error)
+    onError(error)
+  }
 }
 </script>
+
 <style lang="scss" scoped>
 ::v-deep .el-upload--picture-card {
   --el-upload-picture-card-size: 100px !important;
 }
+
 ::v-deep .el-upload-list--picture-card {
   --el-upload-list-picture-card-size: 100px;
 }
