@@ -17,6 +17,9 @@
         <el-button v-if="scope.row.title != '新品手机'" type="primary" link @click="editOrder()">
           编辑
         </el-button>
+        <el-button v-if="scope.row.title != '新品手机'" type="primary" link @click="handleDelete(scope.row.id)">
+          删除
+        </el-button>
       </template>
     </search-table>
 
@@ -55,6 +58,13 @@ const afterSave = (data: any) => {
   // await yourSaveApi(data)
   // 新增成功后，调用 SearchTable 暴露的 getData 或 refreshTable 方法刷新列表
   searchTableRef.value?.getData()
+}
+
+// 新增一个删除后刷新的方法
+const handleDelete = async (id: string) => {
+  await handleAvidete(id)
+  // 调用 afterSave 来刷新列表
+  afterSave(null)
 }
 onMounted(() => { })
 </script>

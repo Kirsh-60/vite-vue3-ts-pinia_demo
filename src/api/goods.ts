@@ -16,6 +16,10 @@ export function getGoodsList(page: number, query = {}) {
 export function addGoodsApi(data: GoodsList) {
   return axios.post('/goodsList/addGoods', data)
 }
+// 删除商品
+export function deleteGoodsApi(id: string) {
+  return axios.get(`/goodsList/deleteGoods/${id}`)
+}
 
 interface updatepassword {
   oldpassword: string
