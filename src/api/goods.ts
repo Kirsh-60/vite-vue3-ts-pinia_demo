@@ -10,11 +10,11 @@ export function updatepassword(data: updatepassword) {
 }
 export function getGoodsList(page: number, query = {}) {
   let r = queryParams(query)
-  return axios.get(`/api/goodsList/goodsApi/${page}${r}`)
+  return axios.get(`/goodsList/goodsApi/${page}${r}`)
 }
 // 新增商品
 export function addGoodsApi(data: GoodsList) {
-  return axios.post('/api/goodsList/addGoods', data)
+  return axios.post('/goodsList/addGoods', data)
 }
 
 interface updatepassword {

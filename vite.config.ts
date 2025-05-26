@@ -34,9 +34,9 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: 'http://ceshi13.dishait.cn',
-        target: 'http://81.70.28.17:3000',
-        // target: 'https://www.blackbuy.asia:3000',
-        // target: 'http://localhost:3000',
+        // target: 'http://81.70.28.17:3000/api',
+        // target: 'http://www.blackbuy.asia/api',
+        target: 'http://localhost:3000/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

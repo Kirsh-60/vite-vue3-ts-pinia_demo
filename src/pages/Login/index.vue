@@ -70,8 +70,8 @@ const router = useRouter()
 
 const loading = ref(false)
 const form = reactive({
-    username: '' as string,
-    password: '' as string,
+    username: 'admin' as string,
+    password: '123456' as string,
     captcha: '' as string
 })
 const ruleFormRef = ref<FormInstance>() //获取form表单demo
