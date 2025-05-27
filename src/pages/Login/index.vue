@@ -59,7 +59,7 @@
     </el-row>
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { toast } from "@/composables/utils";
@@ -120,9 +120,23 @@ async function loadCaptcha() {
     await store.getCaptcha()
     captchaRaw.value = store.svg || ''
 }
+// 敲击回车登录onSubmit
+function handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+        onSubmit(ruleFormRef.value)
+    }
+}
 onMounted(() => {
     // 生成验证码
     loadCaptcha()
+    // 监听键盘事件
+    window.addEventListener('keydown', handleKeydown)
+})
+onUnmounted(() => {
+    // 移除键盘事件监听
+    window.removeEventListener('keydown', handleKeydown)
+    // 清理验证码
+    captchaRaw.value = ''
 })
 
 </script>

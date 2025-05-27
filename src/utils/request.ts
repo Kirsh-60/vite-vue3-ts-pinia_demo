@@ -53,12 +53,12 @@ service.interceptors.response.use(
   },
   async function (error) {
     console.log('error', error)
-    const msg = '请求失败' + error.response.data.error
+    const msg = error.response.data.error
 
     if (msg != 'ok') {
       toast(msg, 'error')
     }
-    if (msg == '非法token，请先登录！') {
+    if (msg == '非法token，请先登录！' || error.response.status == 401) {
       const store = useUserInfoStore()
       await store.logout().finally(() => location.reload())
     }
