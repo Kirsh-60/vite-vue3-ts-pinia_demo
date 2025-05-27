@@ -70,4 +70,13 @@ export default defineConfig({
   optimizeDeps: {
     include: ['@wangeditor/editor', 'vuedraggable'],
   },
+  build: {
+    cssCodeSplit: false, // 禁用 CSS 分割
+    sourcemap: false, // 禁用 sourcemap
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // 禁用代码分割
+      },
+    },
+  },
 })
