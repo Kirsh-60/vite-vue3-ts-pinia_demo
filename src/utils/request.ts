@@ -17,7 +17,7 @@ const app = createApp(App)
 app.use(pinia)
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
-console.log('apiBaseUrl', apiBaseUrl)
+// console.log('apiBaseUrl', apiBaseUrl)
 const service = axios.create({
   baseURL: apiBaseUrl,
 })
@@ -43,7 +43,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    console.log('response', response)
+    // console.log('response', response)
     return (
       response.request.responseType == 'blob' ||
       response.config.responseType == 'text'
@@ -52,13 +52,13 @@ service.interceptors.response.use(
     ) as any
   },
   async function (error) {
-    console.log('error', error)
+    // console.log('error', error)
     const msg = error.response.data.error
 
     if (msg != 'ok') {
       toast(msg, 'error')
     }
-    if (msg == '非法token，请先登录！' || error.response.status == 401) {
+    if (msg == '非法token，请先登录！' || error.response.status == 401) { // 401错误 登录过期
       const store = useUserInfoStore()
       await store.logout().finally(() => location.reload())
     }

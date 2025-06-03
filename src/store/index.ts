@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { login, getInfo, createyzm } from '@/api/login.ts'
 import { setToken, removeToken } from '@/composables/auth'
+import scheduleTokenExpiryAlert from '@/utils/tokenJQ'
 // 你可以对 `defineStore()` 的返回值进行任意命名，但最好使用 store 的名字，同时以 `use` 开头且以 `Store` 结尾。(比如 `useUserStore`，`useCartStore`，`useProductStore`)
 // 第一个参数是你的应用中 Store 的唯一 ID。
 interface RuleForm {
@@ -16,6 +17,8 @@ export const useUserInfoStore = defineStore('userInfo', {
     menuList: [] as any, // 菜单列表
     asideWidth: '200px',
     svg: '', // 验证码
+    // 新增：定时器 ID
+    tokenTimer: null as number | null,
   }),
   getters: {
     // double: (state) => state.count * 2,
@@ -44,6 +47,14 @@ export const useUserInfoStore = defineStore('userInfo', {
           .then((res: any) => {
             // 存储token和用户相关信息
             setToken(res.token)
+            // 启动定时检查，保存定时器 ID
+            this.tokenTimer = window.setInterval(() => {
+              const expired = scheduleTokenExpiryAlert()
+              if (expired && this.tokenTimer) {
+                clearInterval(this.tokenTimer)
+                this.tokenTimer = null
+              }
+            }, 5000)
             resolve(res)
           })
           .catch((err) => {
@@ -53,6 +64,7 @@ export const useUserInfoStore = defineStore('userInfo', {
     },
     // 获取用户信息+路由表
     async getinfo() {
+      // 获取用户信息
       return await new Promise((resolve: any, reject: any) => {
         getInfo()
           .then((res) => {
@@ -67,6 +79,11 @@ export const useUserInfoStore = defineStore('userInfo', {
     },
     // 退出登录
     async logout() {
+      // 清除定时器
+      if (this.tokenTimer) {
+        clearInterval(this.tokenTimer)
+        this.tokenTimer = null
+      }
       // 移除cookies中的token
       removeToken()
       // 清除当前用户状态
