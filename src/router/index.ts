@@ -18,6 +18,8 @@ import NoticeList from '@/pages/notice/list.vue'
 import SettingBase from '@/pages/setting/base.vue'
 import CouponList from '@/pages/coupon/list.vue'
 import Manager from '@/pages/manager/list.vue'
+import BaseComponents from '@/pages/light/baseComponents.vue'
+import HighComponents from '@/pages/light/highComponents.vue'
 // 2. 定义一些路由
 // 每个路由都需要映射到一个组件。
 // 我们后面再讨论嵌套路由。
@@ -142,6 +144,22 @@ const asyncRoutes = [
     component: Manager,
     meta: {
       title: '菜单列表',
+    },
+  },
+  {
+    path: '/light/baseComponents',
+    name: '/light/baseComponents',
+    component: BaseComponents,
+    meta: {
+      title: '低代码-基础组件',
+    },
+  },
+  {
+    path: '/light/highComponents',
+    name: '/light/highComponents',
+    component: HighComponents,
+    meta: {
+      title: '低代码-高级组件',
     },
   },
 ]

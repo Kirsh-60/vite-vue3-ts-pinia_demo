@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "msg": "成功",
+  "data": {
+    "rows": [
+      {
+        "status": "1",
+        "userName": "张三",
+        "nickName": "张三",
+        "deptName": "张三",
+        "descript": "张三",
+        "roleName": "张三",
+        "createTime": "张三"
+      }
+    ],
+    "total": 1
+  }
+}

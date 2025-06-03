@@ -5,6 +5,8 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "vue",
 
     /* Bundler mode */
     "moduleResolution": "node",
@@ -12,20 +14,28 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    // "jsx": "preserve",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/composables/utils.ts", "src/components/BasicOperate/L-Edit/editMethods.js", "src/components/BasicOperate/L-Edit/editMethods.js"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/composables/utils.ts",
+    "src/components/BasicOperate/L-Edit/editMethods.js",
+    "src/components/BasicOperate/L-Edit/editMethods.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

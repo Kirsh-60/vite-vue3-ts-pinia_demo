@@ -24,6 +24,10 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import zhCn from '@element-plus/locale/lang/zh-cn'
 
+// 引入tui-plus 低代码组件库
+import TuiPlus from "@wocwin/t-ui-plus"
+import "@wocwin/t-ui-plus/lib/style.css"
+
 const app = createApp(App, {})
 
 // 注册 Element Plus 的图标
@@ -55,6 +59,7 @@ app.use(ElementPlus, {
   locale: zhCn,
 })
 app.use(pinia)
+app.use(TuiPlus)
 app.mount('#app')
 
 // 加载完成后移除 loading
